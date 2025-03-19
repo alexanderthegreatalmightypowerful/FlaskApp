@@ -1,5 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>DATABASE: {{name}}</h1>
+<div>
 <p>{{data}}</p>
+</div>
+
+<center>
+<div id = "buttons_array"></div>
+</center>
+
+
+<center>
+    <h1>DATA:</h1>
+<div>
+    <table id = 'data_table' border = '5' class = 'sql_data_table'></table>
+</div>
+</center>
 {% endblock %}

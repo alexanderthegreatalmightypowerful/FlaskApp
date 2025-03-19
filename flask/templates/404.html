@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
 
-<head></head>
+<head>
+<script src = "{{ url_for('static', filename='javascript/error_404_dvd.js') }}"></script>
+<link href = "{{ url_for('static', filename='css/404.css') }}" rel = 'stylesheet' type="text/css">
+
+</head>
 
 <body>
 <center>
-<h1>Oops Something Went Wrong<br>
+<h1 id = '404_reader'>Oops Something Went Wrong<br>
     PAGE NOT FOUND!<br>
     Error 404</h1>
 <br>
-<h1 style = "font-size: 200px; rotate: 270deg;">):</h1>
+<button id = 'sadface' class = 'boss' onclick = 'bossclicked()'>|:</button>
 </center>
 
 </body>

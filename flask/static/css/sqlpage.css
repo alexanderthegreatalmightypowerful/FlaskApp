@@ -1,0 +1,19 @@
+.sql_option_button{
+    width: 80px;
+    height: 50px;
+    font-size: auto;
+    word-wrap: break-word;
+    max-width: 10ch;
+    background-color: rgb(170, 170, 170);
+    max-height: 50px;
+}
+
+.sql_table_div{
+    padding: 10px;
+}
+
+.sql_data_table, th, td{    
+    font-size: 40px;
+    border: 4px solid black;
+    border-collapse: collapse;
+}

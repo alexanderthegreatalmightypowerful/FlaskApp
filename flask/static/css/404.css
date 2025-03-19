@@ -1,0 +1,9 @@
+.boss{
+    font-size: 100px; 
+    rotate: 270deg;
+    position: fixed;
+    size-adjust: none;
+    width: 200px;
+    height: 200px;
+    max-width: 200px;
+}
