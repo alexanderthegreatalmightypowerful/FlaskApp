@@ -7,8 +7,18 @@ var boss = null;
 var x_speed = 0.1;
 var y_speed = 0.2;
 
-const stages = {0 : "start", 5 : 'awake', 10 : 'angry', 15 : "mad"}
-const stage_speeds = {"start" : [0.1, 0.2] , 'awake' : [0.12, 0.23] , 'angry' : [0.15, 0.26] , "mad" : [0.18, 0.3]}
+const stages = {0 : "start", 5 : 'awake', 10 : 'confused', 15 : "angry", 20 : 'mad',
+                25 : "furious", 30 : 'empty', 35 : 'villian', 40 : "god"
+}
+
+const stage_speeds = {"start" : [0.1, 0.2] , 'awake' : [0.12, 0.23] , 
+                    'confused' : [0.15, 0.26] , "angry" : [0.18, 0.3], 
+                    'mad' : [0.25, 0.31], 'furious' : [0.25, 0.31], 'empty' : [0.25, 0.31],
+                    'villian' : [0.25, 0.31], 'god' : [0.25, 0.31]}
+
+const stage_images = {'start' : '1', 'awake' : '2', 'confused' : '3', 
+                    'angry' : '4', 'mad' : '5', 'furious' : '6', 'empty' : '7',
+                    'villian' : '8', 'god' : '9'}
 
 function bounce(){
     var colors = ['(255, 0, 0)', '(0, 255, 0)', '(0, 0, 255)'];
@@ -23,12 +33,12 @@ function bounce(){
         y += y_speed;
         el.style.left = `${x}%`;
         el.style.bottom = `${y}%`;
-        if(x >= 90){
+        if(x >= 85){
             x_speed = Math.abs(x_speed) * -1;
             //console.log('its abouve x');
             hit = true;
         }
-        if(y >= 75){
+        if(y >= 70){
             y_speed = Math.abs(y_speed) * -1;
             //console.log('its abouve y');
             hit = true;
@@ -55,22 +65,24 @@ function bounce(){
 }
 
 function facestages(){
+    var title = document.getElementById('404_reader');
+
+
     if(boss == null){
         boss = document.getElementById('sadface');
     }
-    if(stage == 'angry'){
-        boss.innerText = "):";
-    }
-    else if(stage == 'mad'){
-        boss.innerText = "):<";
-    }
+    
+    boss.style.backgroundImage = `url("../static/images/faces/${stage_images[stage]}.png")`;
+
+    title.innerText = `BOSS IS: ${stage}`;
+
 }
 
 function bossclicked(){
     ClickCounter += 1;
     if(ClickCounter == 5 &&  bossfight_started == false){
         bossfight_started = true;
-        document.getElementById('404_reader').style.visibility = 'hidden';
+        document.getElementById('404_reader').innerText = 'STOP!';
     setTimeout(() => {bounce()},100);
     stage = 'awake';
     }

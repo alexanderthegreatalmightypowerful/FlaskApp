@@ -30,7 +30,7 @@ def read_sql_file_for_tables(file):
 
 class SqlDatabase():
     dumps = []
-    def __init__(self, path = 'CodingLanguages.db'):
+    def __init__(self, path = 'GameData.db'):
         total_path = os.getcwd() + '\\DataBases\\' + path
         print('THE TOTAL PATH:',total_path)
         self.tables = []
@@ -68,6 +68,18 @@ class SqlDatabase():
         if self.close == True:
             self.close()
         return self.db.execute(command).fetchone()
+    
+
+    def execute(self, command = None, close = True):
+        if self.closed == True:
+            return []
+        if command == None:
+            return
+        if self.close == True:
+            self.close()
+        self.db.execute(command)
+        self.connection.commit()
+        return self.db.lastrowid
     
 
     def close(self):
