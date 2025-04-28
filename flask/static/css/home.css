@@ -1,0 +1,14 @@
+.play{
+    width: 50%;
+    height: 80px;
+    border-radius: 50px;
+    font-family: 'cool';
+}
+
+.stats{
+    width: 50%;
+    height: 80px;
+    border-radius: 50px;
+    margin: 10px;
+    font-family: 'cool';
+}

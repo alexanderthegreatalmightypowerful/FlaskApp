@@ -4,23 +4,33 @@ var mousex = 1;
 var mousey = 1;
 var step = 10;
 
+var missile_id_counter = 0;
 
 class missile{
+    counter = 0;
     constructor(){
+        //super();
         this.damage = 10;
         this.x = 500;
         this.y = 0;
         this.speed = 1;
+        this.lifetime = 3;
+        this.lived = 0;
+        this.id = missile_id_counter;
+        this.alive = true;
+
+        missile_id_counter += 1;
 
         this.body = document.createElement('button');
         this.body.classList.add('missile');
+        this.body.id = this.id.toString();
         document.body.append(this.body);
         live_missiles.push(this);
-
+        //console.log("created new missile iwth id: ",missile_id_counter, live_missiles);
     }
 }
 
-new missile();
+//new missile();
 
 
 function mousepos(p){
@@ -31,26 +41,34 @@ function mousepos(p){
 
 addEventListener('mousemove', mousepos, false);
 
+function destroy_missile(m){
+    m.speed = 0;
+    m.body.remove();
+}
+
 function update_loop(){
-    live_missiles.forEach((m) => {
+    for(let i = 0; i < live_missiles.length; i++) {
+        var m = live_missiles[i];
+        if(m.alive == false){
+            continue;
+        }
+        m.lived += step / 1000;
+        if(m.lived >= m.lifetime){
+            m.alive = false;
+            continue;
+        }
+
         var ma = (mousey - m.y) / (mousex - m.x);
         var ma2 = (mousex - m.x) / (mousey - m.y);
         var pythag = Math.sqrt((mousey - m.y) ** 2 + (mousex - m.x) ** 2);
         //console.log(pythag);
         if(pythag < 10){
-            ma = 1;
-            m.speed = 0;
-            m.body.remove();
-            if(live_missiles.includes(m) == true){
-                for(let i = 0; i < live_missiles.length; i++){
-                    if(live_missiles[i] == m){
-                        live_missiles.pop(i);
-                        console.log('Destroyed Missile', live_missiles);
-                    }
-                }
-            }
-            delete m;
+            m.alive = false;
+            continue;
         }
+
+        m.body.innerText = parseInt(m.lifetime - m.lived).toString();
+
         //console.log(ma == NaN);
         if(ma != NaN && ma != Infinity && ma != -Infinity && ma != null){
             var tan = Math.tanh(ma);
@@ -75,11 +93,22 @@ function update_loop(){
             m.body.style.top = `${y}px`;
             
         }
-    })
+    }
 
 }
 
 setInterval(() => {
+    var new_missile_list = [];
+    for(let i = 0; i < live_missiles.length; i++){
+        if(live_missiles[i].alive == true){
+            //live_missiles.pop(i);
+            new_missile_list.push(live_missiles[i]);
+            //console.log('Destroyed Missile', new_missile_list);
+        }else{
+            destroy_missile(live_missiles[i]);
+        }
+    }
+    live_missiles = new_missile_list;
     update_loop();
 },
  step)

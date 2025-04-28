@@ -4,9 +4,10 @@
     size-adjust: none;
     width: 200px;
     height: 200px;
-    max-width: 200px;
     background-image: url('../images/faces/1.png');
     background-size:contain;
+    animation-timing-function: linear;
+    /*transform: translate(-50%, -50%); */
 }
 
 html{
@@ -23,3 +24,70 @@ html{
     height: 50px;
     background-color: rgb(255, 0, 0s);
 }
+
+
+#boss_bar{
+    background-color: #20201F;
+    border-radius: 20px;
+    padding: 4px;
+    position: fixed;
+    width: 60%;
+    left: 20%;
+    height: 30px;
+    z-index: 4;
+}
+      
+#boss_bar>div {
+    background-color:rgb(0, 246, 0);
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    }
+
+@keyframes boss_upgrade_animation{
+    0% {
+        background-image: none; 
+        background-color: rgb(0, 0, 0); 
+        width: 200px; 
+        height: 200px;
+        transform: translate(0%, 0%);
+
+    }
+    50%{transform: translate(0%, 0%); rotate: 360deg;}
+
+    51% {
+        background-image: none; 
+        background-color: rgb(247, 247, 247);
+        width: 300px; 
+        height: 300px;
+        transform: translate(0%, 0%);
+    }
+
+    99%{transform: translate(0%, 0%); rotate: 0deg;}
+
+    100%{transform: translate(50%, 50%);rotate: 0deg;}
+}
+
+.boss_animation_class{
+    animation: boss_upgrade_animation 0.8s linear;
+}
+
+
+
+#player_bar{
+    background-color: #20201F;
+    border-radius: 20px;
+    padding: 4px;
+    position: fixed;
+    width: 30px;
+    left: 1%;
+    height: 50%;
+    z-index: 4;
+}
+      
+#player_bar>div {
+    background-color: rgb(0, 246, 74);
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    }
