@@ -8,13 +8,16 @@
 <script src = "{{ url_for('static', filename='javascript/sql.js') }}"></script>
 <script src = "{{ url_for('static', filename='javascript/homepage.js') }}"></script>
 <script src = "{{ url_for('static', filename='javascript/request.js') }}"></script>
+<script src = "{{ url_for('static', filename='javascript/create_new_account.js') }}"></script>
 
 <title>DataBase Site - {{title}}</title>
 
 </head>
 
 <body>
-<header>{% include "header.html" %}</header>
+<header>{% include "header.html" %}
+    
+</header>
 <nav></nav>
 
 <main>
@@ -29,5 +32,5 @@
 </center>
 
 </body>
-
+<script src = "{{ url_for('static', filename='javascript/check_sign_ins.js') }}"></script>
 </html>

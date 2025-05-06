@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href = "{{ url_for('static', filename='css/main.css') }}" rel = 'stylesheet' type="text/css">
+<link href = "{{ url_for('static', filename='css/sqlpage.css') }}" rel = 'stylesheet' type="text/css">
+<link href = "{{ url_for('static', filename='css/home.css') }}" rel = 'stylesheet' type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<script src = "{{ url_for('static', filename='javascript/sql.js') }}"></script>
+<script src = "{{ url_for('static', filename='javascript/homepage.js') }}"></script>
+<script src = "{{ url_for('static', filename='javascript/request.js') }}"></script>
+<script src = "{{ url_for('static', filename='javascript/create_new_account.js') }}"></script>
+
+<title>DataBase Site - {{title}}</title>
+
+</head>
+
+<body>
+<nav></nav>
+
+<main>
+
+<center>
+<h1>CREATE YOUR ACCOUNT</h1>
+<div>
+    USERNAME <input id = 'username'>
+    <br>
+    PASSWORD <input type="password" id = 'password'>
+    <br>
+    <button onclick = "create_new_account()">SUBMIT</button>
+</div>
+</center>    
+
+{% block content %}{% endblock %}
+</main>
+
+<br>
+<br>
+<br>
+<center>
+<footer>&#169; COPYRIGHT OF ALEXANDER THE GREAT ALMIGHTY POWERFULL (2025 - 2025)</footer>
+</center>
+
+</body>
+
+</html>

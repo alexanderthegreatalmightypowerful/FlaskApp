@@ -1,4 +1,4 @@
-function send_request(command = '', func = '', rfunc = null) { 
+function send_request(command = '', func = '', rfunc = null, bfunc = null) { 
     var value = command;
     const url = `http://127.0.0.1:5000/${func}`; 
     var mode = 'POST'; 

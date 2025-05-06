@@ -11,7 +11,7 @@ var rotation_speed = 0;
 var boss_rotation = 0;
 
 var send_missiles = false;
-var missile_time = 1;
+var missile_time = 4;
 
 var upgrading_boss = false;
 

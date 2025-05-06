@@ -1,12 +1,13 @@
-<div class = 'navbar'>
-<e style = "display: flex;" id = "account_info">
-    <button class = "profile_pic"></button>
-    <div>
+<div class = 'navbar' onclick = ''>
+    <e style = "display: flex;" id = "account_info">
+        <button class = "profile_pic"></button>
+        <div>
         <div class = 'account'>ACCOUNT</div>
-        <div class = 'name'>*NAME*</div>
-    </div>
-</e>
-    <button onclick = "sign_in()" class = "sign_in_button">SIGN IN!</button>
-
-    <button class = "stats_button">STATS</button>
+        <div class = 'name' id = 'account_name'>*NAME*</div>
+        </div>
+    </e>
+    <button onclick = "sign_in_page()" class = "sign_in_button" id = 'sign_in'>SIGN IN!</button>
+    <button class = 'sign_in_button' onclick = "go_to_create_account_page()" id = 'create_account'>CREATE</button>
+    <button class = 'sign_in_button' onclick = "sign_out()" id = 'sign_out'>SIGN OUT</button>
+    <button class = "stats_button" onclick = 'go_to_personal_statistics_page()'>STATS</button>
 </div>
