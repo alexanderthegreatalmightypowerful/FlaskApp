@@ -32,7 +32,6 @@ class missile{
 
 //new missile();
 
-
 function mousepos(p){
     //console.log('Position X : ' + p.pageX + '<br />Position Y : ' + p.pageY);
     mousex = p.pageX;

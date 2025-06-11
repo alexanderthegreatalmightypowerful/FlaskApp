@@ -26,8 +26,6 @@ def read_sql_file_for_tables(file):
     #print('TABLES:', tables)
     return tables
 
-
-
 class SqlDatabase():
     dumps = []
     def __init__(self, path = 'GameData.db'):
@@ -88,8 +86,6 @@ class SqlDatabase():
         self.connection.close()
         self.closed = True
 
-
-
 def organize_sql_data(data):
     try:
         result = data
@@ -140,3 +136,10 @@ def organize_sql_data(data):
         print(e)
         return {'columns' : ['N/A'], 'data' : 'there is no data', 'rows' : {'N/A':'N/A'},'output' : '', 'tables' : {}}
 
+def update_sql(table, name, value, where, what):
+    if type(value) == str:
+        value = f"'{value}'"
+    if type(what) == str:
+        what = f'"{what}"'
+    base = SqlDatabase()
+    base.execute(f'UPDATE {table} SET {name} = {value} WHERE {where} = {what}')

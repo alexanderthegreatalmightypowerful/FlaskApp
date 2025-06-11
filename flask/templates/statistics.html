@@ -1,3 +1,27 @@
 {% extends "layout.html" %}
 {% block content %}
+<script src = "{{ url_for('static', filename='javascript/sql_table.js') }}"></script>
+<link href = "{{ url_for('static', filename='css/statistics.css') }}" rel = 'stylesheet' type="text/css">
+
+<center>
+SEARCH: <input>
+<br>
+<button>1</button>
+<button>1</button>
+<button>1</button>
+<button>1</button>
+<button>1</button>
+<button>1</button>
+<button>1</button>
+</center>
+
+<center>
+<div>
+<table id = 'data_table' border = 1>
+
+</table>
+</center>
+
+</div>
+
 {% endblock %}

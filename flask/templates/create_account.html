@@ -4,6 +4,7 @@
 <link href = "{{ url_for('static', filename='css/main.css') }}" rel = 'stylesheet' type="text/css">
 <link href = "{{ url_for('static', filename='css/sqlpage.css') }}" rel = 'stylesheet' type="text/css">
 <link href = "{{ url_for('static', filename='css/home.css') }}" rel = 'stylesheet' type="text/css">
+<link href = "{{ url_for('static', filename='css/sign_in.css') }}" rel = 'stylesheet' type="text/css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 <script src = "{{ url_for('static', filename='javascript/sql.js') }}"></script>
 <script src = "{{ url_for('static', filename='javascript/homepage.js') }}"></script>
@@ -25,6 +26,9 @@
     USERNAME <input id = 'username'>
     <br>
     PASSWORD <input type="password" id = 'password'>
+    <br>
+    <br>
+    <div id = 'error_message' class = 'error_message' style = "visibility: hidden;"></div>
     <br>
     <button onclick = "create_new_account()">SUBMIT</button>
 </div>

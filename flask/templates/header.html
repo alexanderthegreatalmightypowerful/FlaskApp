@@ -1,13 +1,34 @@
-<div class = 'navbar' onclick = ''>
+<div class = 'navbar' onclick = '' id = 'navbar'>
+
     <e style = "display: flex;" id = "account_info">
-        <button class = "profile_pic"></button>
+        <button class = "profile_pic" id = 'profile_pic'></button>
         <div>
-        <div class = 'account'>ACCOUNT</div>
-        <div class = 'name' id = 'account_name'>*NAME*</div>
+        <div class = 'account' id = 'account_id'>ACCOUNT</div>
+        <div class = 'name' id = 'account_name'>NULL</div>
         </div>
     </e>
+
     <button onclick = "sign_in_page()" class = "sign_in_button" id = 'sign_in'>SIGN IN!</button>
     <button class = 'sign_in_button' onclick = "go_to_create_account_page()" id = 'create_account'>CREATE</button>
     <button class = 'sign_in_button' onclick = "sign_out()" id = 'sign_out'>SIGN OUT</button>
-    <button class = "stats_button" onclick = 'go_to_personal_statistics_page()'>STATS</button>
+
+    <button onclick = 'go_to_home_page()' class = 'home_button'>HOME</button>
+
+    <button class = "stats_button" id = 'persinal_stats' onclick = 'go_to_personal_statistics_page()'>STATS</button>
+
+    <div class="area" >
+            <ul class="circles" id = "navbar_animation">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+    </div>
+
 </div>

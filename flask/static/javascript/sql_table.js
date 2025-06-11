@@ -1,6 +1,31 @@
 var total_string = '';
 var select_all = true;
 
+function make_buttons(data){
+  //buttons_array
+  var buttons_data = data['tables'];
+  var div = document.getElementById('buttons_array');
+  div.innerHTML = "";
+
+  for(const [key, value] of Object.entries(buttons_data)){
+    console.log("Making new table:",key);
+    var new_div = document.createElement('div');
+    new_div.classList.add('sql_table_div');
+    div.append(new_div);
+
+    var title = document.createElement('h1');
+    title.innerText = key;
+    new_div.append(title);
+
+    value.forEach(function (item, index) {
+      var button = document.createElement('button');
+      button.classList.add("sql_option_button");
+      button.innerText = item;
+      new_div.append(button);
+    });
+  }
+  
+}
 
 function make_data_table(data){
   var table = document.getElementById('data_table');
@@ -31,59 +56,17 @@ function make_data_table(data){
 
   table.innerHTML = data_string;
 
-}
-
-function make_buttons(data){
-  //buttons_array
-  var buttons_data = data['tables'];
-  var div = document.getElementById('buttons_array');
-  div.innerHTML = "";
-
-  for(const [key, value] of Object.entries(buttons_data)){
-    console.log("Making new table:",key);
-    var new_div = document.createElement('div');
-    new_div.classList.add('sql_table_div');
-    div.append(new_div);
-
-    var title = document.createElement('h1');
-    title.innerText = key;
-    new_div.append(title);
-
-    value.forEach(function (item, index) {
-      var button = document.createElement('button');
-      button.classList.add("sql_option_button");
-      button.innerText = item;
-      new_div.append(button);
-    });
-  }
-  
-}
-
-function sendData() { 
-  var value = 'Select * FROM Languages';
-  const url = 'http://127.0.0.1:5000/request_database_data'; 
-  var mode = 'POST'; 
-  var data = {'data' : value};
-
-    $.ajax({
-          url: url,
-          method: mode,
-          data: data,
-          crossDomain: false,
-          mode : 'no-cors',
-          dataType : 'json',
-        }).done(function (data) {
-          //console.log(data['columns']);
-          //console.log(data['data']);
-          make_data_table(data);
-          make_buttons(data);
-        
-        }).fail(function (error) {
-          alert(error);
-        });
+  make_buttons(data);
 
 }
+
+function get_sql_data(data = null){
+  send_request('get_data', 'get_sql_data', make_data_table);
+}
+
+//make_data_table(data);
 
 setTimeout(() => {
-  sendData();
+  //sendData();
+  get_sql_data();
 }, 1000)

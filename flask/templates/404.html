@@ -4,13 +4,15 @@
 <head>
 
 <link href = "{{ url_for('static', filename='css/404.css') }}" rel = 'stylesheet' type="text/css">
+<link href = "{{ url_for('static', filename='css/bg_animations.css') }}" rel = 'stylesheet' type="text/css">
 
 </head>
 
 <body>
 <div id = 'boss_bar'><div></div></div>
 
-<div id = 'player_bar'><div></div></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<script src = "{{ url_for('static', filename='javascript/request.js') }}"></script>
 
 <script src = "{{ url_for('static', filename='javascript/missiles.js') }}"></script>
 <script src = "{{ url_for('static', filename='javascript/sql.js') }}"></script>
@@ -20,13 +22,32 @@
 <center>
     <br>
     <br>
-<h1 id = '404_reader' style = "z-index: 6;">Oops Something Went Wrong<br>
+<h1 id = '404_reader' style = "z-index: 6; color:white;">Oops Something Went Wrong<br>
     PAGE NOT FOUND!<br>
     Error 404</h1>
 <br>
 <button id = 'sadface' class = 'boss' onclick = 'bossclicked()'></button>
+<button class = 'player', id = 'player'></button>
 </center>
+
+
+<div class="area" >
+            <ul class="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+</div >
 
 </body>
 
+
+<script src = "{{ url_for('static', filename='javascript/player.js') }}"></script>
 </html>

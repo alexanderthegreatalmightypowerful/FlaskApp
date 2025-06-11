@@ -3,39 +3,94 @@
     src: url('../fonts/DisputedHousing-2vYxK.otf');
 }
 
+:root {
+    --button1: #ffffff;
+    --button1_hover: rgb(138, 222, 239);
+    --cream: #e8e8e8;
+    --bluez: #0077b6;
+    --darkblue: #023e8a;
+}
+
 
 html{
-    background-color: rgb(199, 199, 199);
+    background-color: var(--bluez);
     font-family: 'cool';
+    overflow-x: hidden;
+    background-image: url('../images/backgrounds/bg1.jpg');
+    background-size: cover;
 }
 
-.navbar{
-    background-color: rgb(129, 129, 129);
-    padding: 5px;
-    height: 110px;
-    align-content:space-evenly;
-    width: 99.8%;
-    overflow: hidden;    
-    display: inline-flex;
-}
-
-.sign_in_button{
-    width: 200px;
+.home_button{
+    width: 70px;
     height: 70px;
-    border-radius: 50px;
-    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    background-color: var(--button1);
     align-self: center;
     margin: 10px;
     font-family: 'cool';
+    position: absolute;
+    left: calc(50% - 50px);
+    transition: 0.1s;
+    border-width: 0px;
+}
+
+.home_button:hover {
+    width: 200px;
+    background-color: var(--button1_hover);
+    font-size: larger;
+    left: calc(50% - 115px);
+    border-radius: 50px;
+}
+
+.navbar{
+    background-color: var(--darkblue);
+    padding: 5px;
+    height: 70px;
+    align-content:space-evenly;
+    width: 100.35%;
+    overflow: hidden;    
+    display: inline-flex;
+    margin-left: -0.5rem;
+    margin-top: -0.5rem;
+    border-bottom-width : 5px;
+    border-top-width:5px;
+    border-style: solid;
+    /*background-image: url('../images/backgrounds/nav_bg.avif');*/
+    background-size:cover;
+    transition: 0.5s;
+}
+
+
+.sign_in_button{
+    width: 100px;
+    height: 70px;
+    border-radius: 10px;
+    background-color: var(--button1);
+    align-self: center;
+    margin: 10px;
+    font-family: 'cool';
+    transition: 0.1s;
+    border-width: 0px;
+}
+
+.sign_in_button:hover {
+    width: 200px;
+    background-color: var(--button1_hover);
+    font-size: larger;
+    border-radius: 50px;
 }
 
 .profile_pic{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     background-color: aqua;
     border-radius: 50px;
-    border-width: 10px;
+    border-width: 5px;
     border-color: black;
+    background-size: contain;
+    border-color: black;
+    border-style:solid;
+    margin-top: -5px;
 }
 
 
@@ -47,24 +102,75 @@ html{
 
 
 .navbar div .account{
-  background-color: rgb(169, 169, 169);
+  background-color: rgb(53, 50, 225);
   font-family: 'cool';
+  width: 180px;
+  height: 20px;
+  text-align: center;
 }   
 
 .navbar div .name{
-    background-color: rgb(199, 0, 0);
+    background-color: rgb(31, 161, 241);
     font-family: 'cool';
-  }  
+    width: 180px;
+    height: 38px;
+    font-size: 30px;
+    text-align: center;
+    margin-top: -5px;
+}  
   
 .stats_button{
     position: absolute;
-    width: 140px;
+    width: 100px;
     height: 70px;
-    border-radius: 50px;
-    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    background-color: var(--button1);
     align-self: center;
     margin: 10px;
     right: 0px;
     float: right;
     font-family: 'cool';
+    transition: 0.1s;
+    border-width: 0px;
+}
+
+.stats_button:hover {
+    width: 200px;
+    background-color: var(--button1_hover);
+    font-size: larger;
+    border-radius: 50px;
+}
+
+input{
+    width: 30rem;
+    font-size: 30px;
+}
+
+.submit_button{
+    width: 300px;
+    height: 6rem;
+    background-color: var(--button1);
+    font-family: 'cool';
+    font-size: 20px;
+    border-radius: 50px;
+    border-width: 5px;
+    transition: 0.3s;
+    border-width: 0px;
+}
+
+.submit_button:hover {
+    width: 400px;
+    background-color: var(--button1_hover);
+    font-size: 25px;
+    font-family: 'cool';
+    left: calc(50% - 50px);
+    border-radius: 50px;
+}
+
+input{
+    border-radius: 10px;
+}
+
+input:type{
+    border-radius: 50px;
 }

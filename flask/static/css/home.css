@@ -1,14 +1,38 @@
 .play{
     width: 50%;
     height: 80px;
-    border-radius: 50px;
+    border-radius: 10px;
     font-family: 'cool';
+    background-color: var(--button1);
+    transition: 0.3s;
+    border-width: 0px;
+}
+
+.play:hover {
+    width: 60%;
+    background-color: var(--button1_hover);
+    font-size: larger;
+    border-radius: 50px;
 }
 
 .stats{
     width: 50%;
     height: 80px;
-    border-radius: 50px;
+    border-radius: 10px;
     margin: 10px;
     font-family: 'cool';
+    background-color: var(--button1);
+    transition: 0.3s;
+    border-width: 0px;
+}
+
+.stats:hover {
+    width: 60%;
+    background-color: var(--button1_hover);
+    font-size: larger;
+    border-radius: 50px;
+}
+
+.stats:active{
+    background-color: black;
 }

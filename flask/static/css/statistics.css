@@ -1,0 +1,14 @@
+.data_table{
+    max-width: 50rem;
+    border: 2px solid;
+    padding: 0p;
+}
+
+td, tr, th{
+    font-size: 20px;
+    border: 3px solid;
+    margin: 0;
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+}

@@ -15,6 +15,8 @@ var missile_time = 4;
 
 var upgrading_boss = false;
 
+var before_click = 0
+
 const flip = (data) => Object.fromEntries(
     Object
       .entries(data)
@@ -29,10 +31,10 @@ const stages = {0 : "start", 5 : 'awake', 10 : 'confused', 15 : "angry", 20 : 'm
 
 const stagesr = flip(stages);
 
-const stage_speeds = {"start" : [0.1, 0.2, 0, 'awake'] , 'awake' : [0.12, 0.23, 0, 'confused'] , 
-                    'confused' : [0.15, 0.26, 1, 'angry'] , "angry" : [0.18, 0.3, 1.5, 'mad'], 
-                    'mad' : [0.25, 0.31, 2.2, 'furious'], 'furious' : [0.25, 0.31, 2.8, 'empty'], 'empty' : [0.25, 0.31, 4],
-                    'villian' : [0.25, 0.31, 5, 'god'], 'god' : [0.25, 0.31, 12, 'god']}
+const stage_speeds = {"start" : [40, 30, 0, 'awake'] , 'awake' : [1, 1, 0, 'confused'] , 
+                    'confused' : [1.8, 1.8, 1, 'angry'] , "angry" : [2.4, 2.4, 1.5, 'mad'], 
+                    'mad' : [3, 3, 2.2, 'furious'], 'furious' : [3.5, 3.5, 2.8, 'empty'], 'empty' : [4, 4, 4, 'villian'],
+                    'villian' : [4.3, 4.3, 5, 'god'], 'god' : [5, 5, 12, 'god']}
 
 const stage_images = {'start' : '1', 'awake' : '2', 'confused' : '3', 
                     'angry' : '4', 'mad' : '5', 'furious' : '6', 'empty' : '7',
@@ -50,17 +52,18 @@ function boss_upgrade(){
     //boss.style.animation = 'boss_upgrade_animation 0.8s';
     boss.classList.add('boss_animation_class');
     setTimeout(() => {upgrading_boss=false;facestages();}, 900);
+    send_request({'hits' : ClickCounter-before_click}, 'get_clicks', null);
+    before_click = ClickCounter;
 }
-
 
 
 function send_missile(pos){
     var miss = new missile();
-    console.log("BOdy Width:", parseInt(window.innerWidth), parseInt(window.innerHeight));
+    //console.log("BOdy Width:", parseInt(window.innerWidth), parseInt(window.innerHeight));
     miss.x = parseInt(window.innerWidth) * (pos[0] * 0.01);
     miss.y = parseInt(window.innerHeight) * (pos[1] * 0.01);
 
-    console.log(miss.x, miss.y);
+    //console.log(miss.x, miss.y);
     miss.speed = (1 / missile_time) * 4
     miss.lifetime = 5;
 }
@@ -90,17 +93,17 @@ function bounce(){
         var hit = false;
         x += x_speed;
         y += y_speed;
-        el.style.left = `${x}%`;
-        el.style.bottom = `${y}%`;
+        el.style.left = `${x}px`;
+        el.style.bottom = `${y}px`;
         boss_rotation += rotation_speed;
         boss.style.rotate = `${boss_rotation}deg`;
 
-        if(x >= 85){
+        if(x >= window.innerWidth-200){
             x_speed = Math.abs(x_speed) * -1;
             //console.log('its abouve x');
             hit = true;
         }
-        if(y >= 70){
+        if(y >= window.innerHeight - 200){
             y_speed = Math.abs(y_speed) * -1;
             //console.log('its abouve y');
             hit = true;
@@ -136,13 +139,13 @@ function facestages(){
     
     boss.style.backgroundImage = `url("../static/images/faces/${stage_images[stage]}.png")`;
 
-    title.innerText = `BOSS IS: ${stage}`;
+    title.innerText = `BOSS IS: ${stage.toUpperCase()}`;
 
 }
 
 function lower_boss_bar(hp_bar){
     var hp = (boss_hp / (parseInt(stagesr[stage_speeds[stage][3]]) - parseInt(stagesr[stage]))) * 100;
-    console.log(hp, stagesr);
+    //console.log(hp, stagesr);
     hp_bar.style.width = `${hp}%`;
     hp_bar.style.backgroundColor = `rgb(${255}, ${hp * 2.55}, 0.0)`;
 
@@ -152,6 +155,23 @@ function bossclicked(){
     ClickCounter += 1;
     boss_hp -= 1;
 
+    boss = document.getElementById('sadface');
+    boss.style.backgroundColor = 'rgb(216, 161, 161)';
+    setTimeout(() => {boss.style.backgroundColor = 'rgb(255, 255, 255)';}, 50);
+
+    if(ClickCounter == 1){
+        document.getElementById('404_reader').innerText = 'Uhm...';
+    }
+    else if(ClickCounter == 2){
+        document.getElementById('404_reader').innerText = "Don't";
+    }
+    else if(ClickCounter == 3){
+        document.getElementById('404_reader').innerText = "Just";
+    }
+    else if(ClickCounter == 4){
+        document.getElementById('404_reader').innerText = "Don't";
+    }
+
     if(ClickCounter == 5 &&  bossfight_started == false){
         bossfight_started = true;
         document.getElementById('404_reader').innerText = 'STOP!';
@@ -159,7 +179,7 @@ function bossclicked(){
     stage = 'awake';
     }
 
-    console.log(`BOSS CLICKED ${ClickCounter} Times!`);
+    //console.log(`BOSS CLICKED ${ClickCounter} Times!`);
 
     var hp_bar = document.getElementById('boss_bar').children[0];
 

@@ -1,8 +1,13 @@
 function do_account_stuff(data){
     console.log(data);
-    if(data['result'] == 'success'){
+    if(data['result'] == true){
         window.sessionStorage.setItem('username', data['username']);
         go_to_home_page();
+    }else{
+        console.log('ERROR, THE PASSWORD OR USERNAME IS INCORRECT');
+        console.log(data['message']);
+        document.getElementById('error_message').style.visibility = 'visible';
+        document.getElementById('error_message').innerText = data['message'].toString();
     }
 }
 
