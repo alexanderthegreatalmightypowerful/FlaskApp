@@ -4,7 +4,12 @@ from warnings import WarningMessage
 import pickle
 
 
-def read_sql_file_for_tables(file):
+def read_sql_file_for_tables(file) -> list:
+    """
+    to detect and find tables in sql, we have to manualy read through the raw data and search for
+    key words like 'sqlitestudio_temp_table' which means the table name is straight after this key word.
+    """
+
     with open(file, 'rb') as reader:
         read = str(reader.read())
 
@@ -27,8 +32,12 @@ def read_sql_file_for_tables(file):
     return tables
 
 class SqlDatabase():
-    dumps = []
-    def __init__(self, path = 'GameData.db'):
+    """
+    Since the website is primarly built for a database, to make it easier to load data through many functions
+    we can use a self cleaning up class that simplifies and takes care of systems like cleanup.
+    """
+    dumps = [] #public class object for active database classes (used for cleanup)
+    def __init__(self, path = 'GameData.db'): #what will first happened when the class object is created
         total_path = os.getcwd() + '\\DataBases\\' + path
         print('THE TOTAL PATH:',total_path)
         self.tables = []
@@ -42,13 +51,21 @@ class SqlDatabase():
             print('SQL FAILED TO CONNECT:', e)
         
         for item in SqlDatabase.dumps:
-            #item.close()
-            del item
+            try:
+                if item.closed == False:
+                    item.close()
+            except: pass
+            del item #clean up existing active unused database classes
         SqlDatabase.dumps = []
         SqlDatabase.dumps.append(self)
 
+    def fetchall(self, command = None, close = True) -> tuple: #fetches every value returned from the sql querey
+        """
+        in most cases, we only need to use one command to get what we want from the database
+        so the close varaibale is set to 'True' by default so when you call function sto extract or append data
+        to the database, it will close the tunnel automaticly (if close's value is unchanged).
+        """
 
-    def fetchall(self, command = None, close = True):
         if self.closed == True:
             return []
 
@@ -58,7 +75,7 @@ class SqlDatabase():
             self.close()
         return self.db.execute(command).fetchall()
     
-    def fetchone(self, command = None, close = True):
+    def fetchone(self, command = None, close = True) -> tuple: #fetches the first value from querey
         if self.closed == True:
             return []
         if command == None:
@@ -67,8 +84,7 @@ class SqlDatabase():
             self.close()
         return self.db.execute(command).fetchone()
     
-
-    def execute(self, command = None, close = True):
+    def execute(self, command = None, close = True): #execute command allows any querey to be executed.
         if self.closed == True:
             return []
         if command == None:
@@ -77,19 +93,25 @@ class SqlDatabase():
             self.close()
         self.db.execute(command)
         self.connection.commit()
-        return self.db.lastrowid
+        return self.db.lastrowid #returns cursor data
     
-
-    def close(self):
+    def close(self): #closes database (can be called manualy or automaticly by querey functions)
         if self.closed == True:
             return
         self.connection.close()
         self.closed = True
 
-def organize_sql_data(data):
+
+def organize_sql_data(data) -> dict: 
+    """
+    like the function suggests, we organize a returned sql querey from the SqlDatabase class.
+    To easily make display tables in html, we have to send a readible, easily interperated dictionary, 
+    where the javascript in the front end can convert the organised data in clean html tables.
+    """
+
     try:
         result = data
-        columns = [i[0] for i in SqlDatabase.dumps[-1].db.description]
+        columns = [i[0] for i in SqlDatabase.dumps[-1].db.description] #exctract columns from sql class
 
         #===============TABLES
         tables = {}
@@ -105,8 +127,7 @@ def organize_sql_data(data):
             for keys in dump.db.execute(f"SELECT * FROM pragma_table_info('{item}');").fetchall():
                 tables[item].append(keys[1])
 
-        print(tables)
-
+        #print(tables)
 
         print_line = ''
 
@@ -119,7 +140,7 @@ def organize_sql_data(data):
             data[str(column)] = []
             column_data.append(str(column))
 
-        print_line += f'\n{("_" * 18) * len(columns)}\n'
+        print_line += f'\n{("_" * 18) * len(columns)}\n' #prepares a string that will be printed into the console for backend visualization
         colum_name = -1
         for item in result:
             table_rows.append([])
@@ -131,15 +152,57 @@ def organize_sql_data(data):
             print_line += '\n'
 
         
-        return {'columns' : columns, 'data' : data, 'rows' : table_rows, 'output' : print_line, 'tables' : tables}
+        return {'columns' : columns, 'data' : data, 'rows' : table_rows, 'output' : print_line, 'tables' : tables, 'failed' : False} #return a succesfull table request object
     except Exception as e: # if an error, still send something else it will break. we send N/A here
         print(e)
-        return {'columns' : ['N/A'], 'data' : 'there is no data', 'rows' : {'N/A':'N/A'},'output' : '', 'tables' : {}}
+        return {'columns' : ['N/A'], 'data' : 'there is no data', 'rows' : {'N/A':'N/A'},'output' : '', 'tables' : {}, 'failed' : True} #send a failed table request object
 
-def update_sql(table, name, value, where, what):
-    if type(value) == str:
+def update_sql(table, name, value, where, what) -> None: #update something in the database
+    if type(value) == str: #we add extra parenthasies so when it is formated in string, it keeps its string properties
         value = f"'{value}'"
     if type(what) == str:
         what = f'"{what}"'
     base = SqlDatabase()
     base.execute(f'UPDATE {table} SET {name} = {value} WHERE {where} = {what}')
+
+def check_sql_data(data:str) -> bool: #check for malisouse inputs
+    splitz = data.lower().split(' ')
+    if "insert" in splitz:
+        return False
+    if '*' in list(data):
+        return False
+    if 'password' in splitz:
+        return False
+
+    return True
+
+
+def get_profile_info(profile) -> dict:
+    db = SqlDatabase()
+    data = {"name" : profile, "failed" : False}
+    data['rank'] = db.fetchone(f"Select Rank FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
+    data['hits'] = db.fetchone(f"Select Hits FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
+    data['medals'] = db.fetchall(f"Select Medal FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
+    data['achievements'] = db.fetchall(f"Select Achievements FROM UserData WHERE USERNAME == '{profile}';", close=True)[0]
+    data['picture'] = db.fetchall(f"Select Picture FROM UserData WHERE USERNAME == '{profile}';", close=True)[0]
+    return data
+
+def sort_request_sql_data(data) -> str:
+    final = "Select UserData.USERNAME From UserData "
+
+    medals = 'JOIN Medals ON UserData.Medal = Medals.Medal Where UserData.Medal == ('
+
+    for i, item in enumerate(data['medals']):
+        if i == 0:
+            medals += f' "{item}"'
+        else:
+            medals += f' Or "{item}"'
+
+    medals += ')'
+
+    print("MEDALS:",medals)
+    final += medals + ";"
+    print("FINAL:", final)
+
+    return final
+

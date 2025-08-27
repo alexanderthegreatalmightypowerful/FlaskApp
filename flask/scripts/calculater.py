@@ -1,11 +1,11 @@
 import re, string, threading, time, sys
 
 
-def log_error(error = "Null"):
+def log_error(error = "Null") -> None:
     print(f"\n>>ERROR: {error}")
 
 
-def calculate(inp):
+def calculate(inp) -> float:
     #get rid of any unwanted chars
     listed = list(inp)
     wanted_chars = list("1234567890.+-*/")

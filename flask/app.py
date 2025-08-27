@@ -1,9 +1,9 @@
 """
 Author : Alexander Krakowiak
 
-This is the main script that hold the flask routing code
+This is the main script that hold the flask routing code for the entertainment website
 
-Here is where the website connection and page distrabution takes place
+The purpose of this application to deliver a webpage experience
 """
 
 from flask import Flask, render_template, request, jsonify, session
@@ -19,16 +19,18 @@ from sqlite3 import OperationalError
 
 from scripts.flask_sess import *
 
-app = Flask(__name__, static_folder='static', template_folder = 'templates')
+app = Flask(__name__, static_folder='static', template_folder = 'templates') #create flask app object
 
 app.secret_key = 'BAD_SECRET_KEY'
 
-@app.errorhandler(404)
+#FrontEnd Requests
+
+@app.errorhandler(404) #handle 404 missing page errors
 def page_not_found(e):
     return render_template('404.html'), 404
 
 @app.route('/')
-@app.route('/home')
+@app.route('/home') #home route / front page
 def home():
     print(session)
     print(session, app.session_interface.get_cookie_path(app))
@@ -46,14 +48,12 @@ def about():
     return render_template('about.html')
 
 @app.route('/create_account')
-def create_account():
+async def create_account():
     return render_template('create_account.html')
-
 
 @app.route('/statistics')
 def statistics():
     return render_template('statistics.html')
-
 
 @app.route('/personal_statistics')
 def personal_statistics():
@@ -63,14 +63,11 @@ def personal_statistics():
 def sign_in_page():
     return render_template('sign_in.html')
 
+#JAVASCRIPT AJAX ROUTES
 
-#JAVASCRIPT ROUTS
-
-
-def jsonify_request(data):
+def jsonify_request(data) -> list: #this handles incoming ajax requests and parses them to a readable python dictionary
     js = json.loads(data.decode())
     return js['data']
-
 
 @app.route('/sign_in', methods=['POST', 'GET'])
 def sign_in():
@@ -85,6 +82,7 @@ def sign_in():
     if compared[0] == True:
         print("NEW ACCOUNT SIGN IN!:", request.form.get("name"), request.cookies, get_cookie(request))
         session[get_cookie(request)] = data['username']
+
     return jsonify(new_data) 
 
 @app.route('/sign_out', methods=['POST', 'GET'])
@@ -98,9 +96,6 @@ def sign_out():
     except Exception as e: print(e)
     print(session)
     return jsonify({})
-
-
-
 
 
 @app.route('/create_new_account', methods=['POST', 'GET'])
@@ -117,30 +112,49 @@ def create_new_account():
     new_data = {'result' : check[0], 'username' : data['username'], 'message' : check[1]}
     return jsonify(new_data) 
 
-#SESSION STUFF
+#SESSION INITIALIZATION
 
 app.config["SESSION_PERMANENT"] = False     # Sessions expire when the browser is closed
-app.config["SESSION_TYPE"] = "filesystem"     # Store session data in files
+app.config["SESSION_TYPE"] = "filesystem"     #Store session data in folder instead of ram
 
-# Initialize Flask-Session
-
-
-@app.route('/get_sql_data', methods=['POST', 'GET'])
+@app.route('/get_sql_data', methods=['POST', 'GET']) #get incoming database querry requests from frontend
 def get_sql_data():
     data = jsonify_request(request.get_data())
     print('dict json data:', data)
 
     base = SqlDatabase()
-
-    new_data = organize_sql_data(base.fetchall('SELECT USERNAME, hits, rank FROM UserData ORDER BY rank ASC;'))
-    print(new_data)
-    return jsonify(new_data) 
+    print('DATA:',data)
+    if check_sql_data(data) == True: #if the system thinks the sql query is valid, post a complete data object
+        new_data = organize_sql_data(base.fetchall(data))
+    else: #if the system deetcs or thinks the query has failed, it will send an incomplete error data object
+        new_data = {'failed' : True}
+    #print(new_data)
+    return jsonify(new_data)
 
 
 @app.route('/get_profile_data', methods=['POST', 'GET'])
 def get_profile_data():
-    data = jsonify_request(request.get_data())
+    try:
+        cookie = session[get_cookie(request)]
+    except Exception as e: 
+        print(e)
+        return jsonify({'failed' : True})
+    
+    data = get_profile_info(cookie)
+    print(data)
     return jsonify(data)
+
+@app.route('/set_profile_picture', methods=['POST', 'GET'])
+def set_profile_picture():
+    try:
+        cookie = session[get_cookie(request)]
+    except Exception as e: 
+        print(e)
+        return jsonify({'failed' : True})
+    data = jsonify_request(request.get_data())
+    update_sql('UserData', "Picture", data['picture'], "USERNAME", cookie)
+    
+    return jsonify({})
 
 Session(app)
 app.config.from_object(__name__)
@@ -154,26 +168,46 @@ def set():
 def get():
     return session.get('key', 'not set')
 
-@app.route('/get_clicks', methods = ["POST", "GET"])
+@app.route('/get_clicks', methods = ["POST", "GET"]) 
 def get_clicks():
+    """
+    this route is part of the game statistics and records how many times the user has clicked the boss game object in the frontend
+    """
     data = jsonify_request(request.get_data())
     user = None
     try:
-        user = get_user_by_cookie(request, session)
+        user = get_user_by_cookie(request, session) #trys to get the user session token
         print('GOT USER!')
     except: return jsonify({})
 
     if user == None:
         return jsonify({})
-    
+
     base = SqlDatabase()
     hits = base.fetchone(f'SELECT hits FROM UserData Where USERNAME = "{user}"')[0]
     print(data['hits'], hits, user)
     hits += data['hits']
 
-    update_sql('UserData', 'Hits', hits, 'USERNAME', user)
+    update_sql('UserData', 'Hits', hits, 'USERNAME', user) #update the hit column on a player
 
     return jsonify({})
 
+
+@app.route("/world_statistics_data", methods = ['POST', 'GET'])
+def world_statistics_data():
+    return jsonify({"testing" : "BEANS"})
+
+@app.route("/world_statistics_data_custom", methods = ['POST', 'GET'])
+def world_statistics_data_custom():
+    data = jsonify_request(request.get_data())
+    print(data)
+    return_string = sort_request_sql_data(data)
+    base = SqlDatabase()
+    d = base.fetchall(return_string)
+    sorted = organize_sql_data(d)
+    print(d)
+    return jsonify({"testing" : "BEANS"})
+
+#INITATE FLASK SERVER / APP
 if __name__ == '__main__':
     app.run(debug = True)

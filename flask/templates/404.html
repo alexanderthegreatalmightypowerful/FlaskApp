@@ -5,7 +5,7 @@
 
 <link href = "{{ url_for('static', filename='css/404.css') }}" rel = 'stylesheet' type="text/css">
 <link href = "{{ url_for('static', filename='css/bg_animations.css') }}" rel = 'stylesheet' type="text/css">
-
+<link href = "{{ url_for('static', filename='css/rock.css') }}" rel = 'stylesheet' type="text/css">
 </head>
 
 <body>
@@ -14,6 +14,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 <script src = "{{ url_for('static', filename='javascript/request.js') }}"></script>
 
+<script src = "{{ url_for('static', filename='javascript/rocks.js') }}"></script>
 <script src = "{{ url_for('static', filename='javascript/missiles.js') }}"></script>
 <script src = "{{ url_for('static', filename='javascript/sql.js') }}"></script>
 <script src = "{{ url_for('static', filename='javascript/error_404_dvd.js') }}"></script>
@@ -45,6 +46,10 @@
                     <li></li>
             </ul>
 </div >
+
+<center>
+<div class = 'DIED_TEXT'>YOU DED!</div>
+</center>
 
 </body>
 

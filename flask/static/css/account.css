@@ -1,0 +1,96 @@
+h1{
+    color: white;
+}
+h2{
+    color: white;
+}
+
+.grider{
+    display: grid;
+}
+
+.border_div{
+    border-color: var(--border_color);
+    border-width: var(--border_width);
+    border-style: solid;
+    padding: 15px;
+    margin: 2rem;
+}
+
+.profile_pic2{
+    width: 145px;
+    height: 145px;
+    background-color: aqua;
+    border-radius: 50%;
+    border-width: 5px;
+    border-color: black;
+    background-size: contain;
+    border-color: black;
+    border-style:solid;
+
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
+    border-style: solid;
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+}
+
+.profile_pic_select{
+    width: 120px;
+    height: 120px;
+    background-color: aqua;
+    border-radius: 50%;
+    border-width: 5px;
+    border-color: black;
+    background-size: contain;
+    border-color: black;
+    border-style:solid;
+
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
+    border-style: solid;
+    border-width: 6px;
+    border-color: var(--border_color);
+
+    margin: 14px;
+}
+
+.choose_profiles_div{
+    /* position: fixed; */
+    position: fixed;
+    width: 80%;
+    min-height: 5rem;
+    background-color: rgba(0, 0, 0, 0.784);
+    border-width: 3px;
+    border-style: solid;
+    border-color: white;
+    left: 10%;
+    top: 15rem;
+    display:flexbox;
+    padding: 4px;
+    justify-content: flex-start;
+    animation-fill-mode: forwards;
+    visibility: hidden;
+}
+
+@keyframes choose_profiles_div_in{
+    0%{
+        left: -100%;
+        visibility: visible;
+    }
+    100%{
+        left: 10%;
+        visibility: visible;
+    }
+}
+
+@keyframes choose_profiles_div_out{
+    0%{
+        visibility: visible;
+        left: 10%;
+    }
+    100%{
+        left: -100%;
+        visibility: hidden;
+    }
+}

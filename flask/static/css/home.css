@@ -6,11 +6,18 @@
     background-color: var(--button1);
     transition: 0.3s;
     border-width: 0px;
+
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+    border-style: solid;
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
 }
 
 .play:hover {
     width: 60%;
-    background-color: var(--button1_hover);
+    background-color: var(--button_hover_color);
+    border-color: var(--button_hover_border_color);
     font-size: larger;
     border-radius: 50px;
 }
@@ -24,11 +31,18 @@
     background-color: var(--button1);
     transition: 0.3s;
     border-width: 0px;
+    
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+    border-style: solid;
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
 }
 
 .stats:hover {
     width: 60%;
-    background-color: var(--button1_hover);
+    background-color: var(--button_hover_color);
+    border-color: var(--button_hover_border_color);
     font-size: larger;
     border-radius: 50px;
 }

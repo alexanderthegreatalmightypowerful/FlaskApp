@@ -1,5 +1,4 @@
-var total_string = '';
-var select_all = true;
+
 
 function make_buttons(data){
   //buttons_array
@@ -28,6 +27,11 @@ function make_buttons(data){
 }
 
 function make_data_table(data){
+  if(data['failed'] == true){
+    console.log("OH NO! I Can't seem to find what you're looking for!");
+    return;
+  }
+
   var table = document.getElementById('data_table');
   var table_data = data;
 
@@ -60,13 +64,37 @@ function make_data_table(data){
 
 }
 
-function get_sql_data(data = null){
-  send_request('get_data', 'get_sql_data', make_data_table);
+function get_all_sql_data(data = null){
+  send_request('SELECT USERNAME FROM UserData;', 'get_sql_data', make_data_table);
 }
-
-//make_data_table(data);
 
 setTimeout(() => {
   //sendData();
-  get_sql_data();
-}, 1000)
+  get_all_sql_data();
+}, 10)
+
+
+function get_sql_data(data = ""){
+  send_request(data, 'get_sql_data', make_data_table);
+}
+
+function search_name(){
+  name1 = document.getElementById('search').value;
+  if(name1 == ''){
+    get_sql_data("Select rank, USERNAME, hits From UserData ORDER BY rank ASC;");
+    return;
+  }
+  get_sql_data(`Select rank, USERNAME, hits FROM UserData WHERE USERNAME == "${name1}";`);
+}
+
+function search(ele){
+    if(event.key === 'Enter') {
+        search_name();       
+    }
+}
+
+function send_cusom_sql(){
+  
+}
+
+

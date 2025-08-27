@@ -2,13 +2,95 @@
     max-width: 50rem;
     border: 2px solid;
     padding: 0p;
+    border-color: aqua;
 }
 
 td, tr, th{
-    font-size: 20px;
+    font-size: 40px;
     border: 3px solid;
+    border-color: aqua;
     margin: 0;
     padding: 0;
     border-spacing: 0;
     border-collapse: collapse;
+    color: white;
+    border-style: solid;
+    border-spacing: 0px;
+
+}
+
+.search_button{
+    width: 40px;
+    height: 40px;
+    background-color: var(--button_bg_color);
+    color: var(--button_hover_border_color);
+    font-size: 30px;
+
+    /* display: flexbox; */
+    justify-content: center;
+    align-items: center;  
+    /* margin-top: -20px; */
+    border-radius: 50%;
+    border-style: solid;
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+}
+
+.select_button{
+    width: 100px;
+    height: 40px;
+    border-radius: 50px;
+    border-width: 0px;
+    background-color: rgb(0, 0, 0);
+    border-style: solid;
+    border-width: var(--border_width);
+    border-color: var(--border_red_color);
+    color: var(--button_hover_border_color);
+    font-weight: bolder;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.bordered_div{
+    width: 90%;
+    /* background-color:rgba(0, 0, 255, 0.252); */
+    border-color: var(--button_hover_border_color);
+    border-width: var(--border_width);
+}
+
+.search_bar{
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-width: 0px;
+    border-radius: 50px;
+
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+    border-style: solid;
+    text-align: center;
+}
+
+
+.filter{
+    width: 50%;
+    height: 50px;
+    border-radius: 10px;
+    font-family: 'cool';
+    background-color: var(--button1);
+    transition: 0.3s;
+    border-width: 0px;
+
+    border-width: var(--border_width);
+    border-color: var(--border_red_color);
+    border-style: solid;
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
+}
+
+.filter:hover {
+    width: 60%;
+    background-color: var(--button_hover_color);
+    border-color: var(--border_color);
+    font-size: larger;
+    border-radius: 50px;
 }

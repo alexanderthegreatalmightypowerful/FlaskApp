@@ -22,8 +22,6 @@ const flip = (data) => Object.fromEntries(
       .entries(data)
       .map(([key, value]) => [value, key])
     );
-  
-
 
 const stages = {0 : "start", 5 : 'awake', 10 : 'confused', 15 : "angry", 20 : 'mad',
                 25 : "furious", 30 : 'empty', 35 : 'villian', 40 : "god"
@@ -54,18 +52,6 @@ function boss_upgrade(){
     setTimeout(() => {upgrading_boss=false;facestages();}, 900);
     send_request({'hits' : ClickCounter-before_click}, 'get_clicks', null);
     before_click = ClickCounter;
-}
-
-
-function send_missile(pos){
-    var miss = new missile();
-    //console.log("BOdy Width:", parseInt(window.innerWidth), parseInt(window.innerHeight));
-    miss.x = parseInt(window.innerWidth) * (pos[0] * 0.01);
-    miss.y = parseInt(window.innerHeight) * (pos[1] * 0.01);
-
-    //console.log(miss.x, miss.y);
-    miss.speed = (1 / missile_time) * 4
-    miss.lifetime = 5;
 }
 
 function bounce(){
@@ -132,7 +118,6 @@ function bounce(){
 function facestages(){
     var title = document.getElementById('404_reader');
 
-
     if(boss == null){
         boss = document.getElementById('sadface');
     }
@@ -189,7 +174,11 @@ function bossclicked(){
         return;
     }
 
+    ro = new rock();
+    ro.body.style.backgroundImage = `url('../static/images/faces/${stage_images[stage]}.png')`;
+
     if(stages.hasOwnProperty(ClickCounter) == true){
+        missiles_enabled = true;
         console.log('NEW STAGE HAS BEGUN');
         stage = stages[ClickCounter];
         boss_hp = (parseInt(stagesr[stage_speeds[stage][3]]) - parseInt(stagesr[stage]));//stage_speeds[stage][3];

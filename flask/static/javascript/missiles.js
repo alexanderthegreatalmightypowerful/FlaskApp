@@ -3,6 +3,9 @@ var live_missiles = [];
 var mousex = 1;
 var mousey = 1;
 var step = 10;
+var missiles_enabled = false;
+var missile_spawn_timer = 3000;
+var missile_count_spawn_timer = 0;
 
 var missile_id_counter = 0;
 
@@ -18,6 +21,7 @@ class missile{
         this.lived = 0;
         this.id = missile_id_counter;
         this.alive = true;
+        this.rot = 0;
 
         missile_id_counter += 1;
 
@@ -66,7 +70,7 @@ function update_loop(){
             continue;
         }
 
-        m.body.innerText = parseInt(m.lifetime - m.lived).toString();
+        //m.body.innerText = parseInt(m.lifetime - m.lived).toString();
 
         //console.log(ma == NaN);
         if(ma != NaN && ma != Infinity && ma != -Infinity && ma != null){
@@ -90,13 +94,34 @@ function update_loop(){
     
             m.body.style.left = `${x}px`;
             m.body.style.top = `${y}px`;
-            
+
+            m.rot += 1;
+            m.body.style.rotate = `${m.rot}deg`;
+
         }
     }
 
 }
 
+function send_missile(pos){
+    var miss = new missile();
+    //console.log("BOdy Width:", parseInt(window.innerWidth), parseInt(window.innerHeight));
+    miss.x = pos[0];
+    miss.y = pos[1];
+    miss.speed = (1 / missile_time) * 4
+    miss.lifetime = 5;
+}
+
 setInterval(() => {
+
+    if (missiles_enabled == true){
+        missile_count_spawn_timer += step;
+    }
+    if (missile_count_spawn_timer >= missile_spawn_timer){
+        missile_count_spawn_timer = 0;
+        send_missile([500, 500]);
+    }
+
     var new_missile_list = [];
     for(let i = 0; i < live_missiles.length; i++){
         if(live_missiles[i].alive == true){

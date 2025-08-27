@@ -2,6 +2,10 @@ var held_keys = {'w' : 0, 's' : 0, 'a' : 0, 'd' : 0};
 var timed_keys = {};
 var coords = {0 : 0, 1 : 0};
 var speed = 6;
+var dead = false;
+
+var player_max_hp = 6;
+var player_hp = 6;
 
 var player = document.getElementById('player');
 
@@ -14,7 +18,7 @@ function player_stop_animation(){
 }
 
 function move(coord = [0, 0]){
-
+    
     var nspeed = speed;
 
     if(coord[0] != 0 && coord[1] != 0){
@@ -74,9 +78,65 @@ function move(coord = [0, 0]){
 
 }
 
+function take_damage(damage = 0){
+    console.log("PLAYER TOOK DAMAGE!");
+    player_hp += damage;
+    if(player_hp <= 0){
+        player.style.backgroundColor = `rgb(${0}, ${0}, 0)`;
+        dead = true;
+        return;
+    }
+
+    var hp = (player_hp / player_max_hp) * 255;
+    var counter = 255 - hp;
+    console.log(hp);
+    player.style.backgroundColor = `rgb(${counter}, ${Math.trunc(hp)}, 0)`;
+}
+
+var damage_inverval = 0;
 
 setInterval(() => {
     move([held_keys['d'] - held_keys['a'], held_keys['w'] - held_keys['s']]);
+
+    if(live_rocks != undefined)
+    {
+
+    damage_inverval += 10;
+
+    //console.log(damage_inverval);
+
+    if(boss != null){
+        var calc = [coords[0] - parseInt(boss.style.left), coords[1] - parseInt(boss.style.bottom)];
+        var dist = Math.sqrt(calc[0] ** 2 + calc[1] ** 2);
+        if(dist <= 200){
+            //console.log('DISTANCE:', dist);
+            if(damage_inverval >= 1000){
+                take_damage(-1);
+                damage_inverval = 0;
+            }
+        }
+    }
+
+    for(let i = 0; i < live_rocks.length; i++){
+        var r = live_rocks[i];
+        if(r == undefined){
+            continue;
+        }
+        var calc = [coords[0] - r.x, coords[1] - r.y];
+        var dist = Math.sqrt(calc[0] ** 2 + calc[1] ** 2);
+        if(dist <= 60){
+            console.log('DISTANCE:', dist);
+            destroy_rock(r);
+            if(damage_inverval >= 1000){
+                take_damage(-1);
+                damage_inverval = 0;
+            }
+            break;
+        }
+    };
+
+    }
+
 }, 10)
 
 

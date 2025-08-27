@@ -1,10 +1,67 @@
 {% extends "layout.html" %}
 {% block content %}
+<link href = "{{ url_for('static', filename='css/account.css') }}" rel = 'stylesheet' type="text/css">
+<script src = "{{ url_for('static', filename='javascript/account_animations.js') }}"></script>
 
+
+<center>
+    <h1>PROFILE</h1>
+</center>
+
+<div class = "grider">
+    <center>
+    <div class = "border_div">
+    <h1>Identity</h1>
 <div>
-    <br>
-    <button class = 'profile_pic' style = "background-image: url('../static/images/profiles/1.png');"></button> 
-    <h2 id = 'account_name'>Account Name</h2>
+    <button class = 'profile_pic2' id = 'profile_pic2' style = "background-image: url('../static/images/profiles/1.png');"  onclick="open_profile_choose_menu()"></button> 
+    <p>xxNamexx</p>
 </div>
+</div>
+    </center>
+    <center>
+    <div class = "border_div">
+        <div>
+            <h1>Account Statistics</h1>
+
+            <h2 id = 'info1'>Rank: </h2>
+            <h2 id = 'info2'>Hits: </h2>
+            <h2 id = 'info3'>Medals: </h2>
+            <h2 id = 'info4'>Achievements: </h2>
+        </div>
+
+    </div>
+    </center>
+</div>
+
+<center>
+    <div class = 'choose_profiles_div' id = "choose_profiles_div">
+        <h1>Select A Profile Picture</h1>
+        <br>
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/1.png');"  onclick="close_profile_choose_menu('1')"></button> 
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/2.png');"  onclick="close_profile_choose_menu('2')"></button> 
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/3.png');"  onclick="close_profile_choose_menu('3')"></button> 
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/4.png');"  onclick="close_profile_choose_menu('4')"></button> 
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/5.png');"  onclick="close_profile_choose_menu('5')"></button> 
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/6.png');"  onclick="close_profile_choose_menu('6')"></button> 
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/7.png');"  onclick="close_profile_choose_menu('7')"></button> 
+        <button class = 'profile_pic_select' style = "background-image: url('../static/images/profiles/8.png');"  onclick="close_profile_choose_menu('8')"></button> 
+    </div>
+</center>
+
+<script>
+function set_data(data){
+    console.log("Own Data", data);
+    if(data['failed'] == false){
+        document.getElementById("info1").innerText = `Rank: ${data['rank']}`;
+        document.getElementById("info2").innerText = `Hits: ${data['hits']}`;
+        document.getElementById("info3").innerText = `Medals: ${data['medals']}`;
+        document.getElementById("info4").innerText = `Achievements: ${data['achievements']}`;
+        document.getElementById('profile_pic2').style.backgroundImage = `url('static/images/profiles/${data['picture']}.png')`; 
+    }
+}
+
+send_request("get_data", "get_profile_data", set_data);
+
+</script>
 
 {% endblock %}

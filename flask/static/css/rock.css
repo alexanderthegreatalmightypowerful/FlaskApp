@@ -1,0 +1,5 @@
+.rock{
+    z-index: 20;
+    position: fixed;
+    background-size: contain;
+}

@@ -1,5 +1,5 @@
 function set_profile(data){
-    document.getElementById('profile_pic').style.backgroundImage = "url('static/images/profiles/1.png')";
+    document.getElementById('profile_pic').style.backgroundImage = `url('static/images/profiles/${data['picture']}.png')`;
 }
 
 

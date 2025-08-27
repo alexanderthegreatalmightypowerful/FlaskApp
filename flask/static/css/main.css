@@ -3,21 +3,34 @@
     src: url('../fonts/DisputedHousing-2vYxK.otf');
 }
 
+div{
+    border-style: solid;
+}
+
 :root {
-    --button1: #ffffff;
+    --button1: #5fb9e67c;
     --button1_hover: rgb(138, 222, 239);
     --cream: #e8e8e8;
     --bluez: #0077b6;
-    --darkblue: #023e8a;
+    --darkblue: #000000;
+    --animation_button_time: 0.3s;
+    --border_color: rgb(49, 251, 27);
+    --border_red_color: rgb(251, 27, 27);
+    --border_width: 3px;
+    --button_bg_color: black;
+    --button_text_color: white;
+    --button_hover_color: black;
+    --button_hover_border_color: rgb(27, 202, 251);
 }
 
-
 html{
-    background-color: var(--bluez);
+    background-color: black;
     font-family: 'cool';
     overflow-x: hidden;
-    background-image: url('../images/backgrounds/bg1.jpg');
+    /* background-image: url('../images/backgrounds/bg1.jpg'); */
     background-size: cover;
+    margin-top: -0.5rem;
+    margin-left: 0rem;
 }
 
 .home_button{
@@ -30,13 +43,19 @@ html{
     font-family: 'cool';
     position: absolute;
     left: calc(50% - 50px);
-    transition: 0.1s;
-    border-width: 0px;
+    transition: var(--animation_button_time);
+
+    border-width: var(--border_width);;
+    border-color: var(--border_color);
+    border-style: solid;
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
 }
 
 .home_button:hover {
     width: 200px;
-    background-color: var(--button1_hover);
+    background-color: var(--button_hover_color);
+    border-color: var(--button_hover_border_color);
     font-size: larger;
     left: calc(50% - 115px);
     border-radius: 50px;
@@ -51,13 +70,15 @@ html{
     overflow: hidden;    
     display: inline-flex;
     margin-left: -0.5rem;
-    margin-top: -0.5rem;
-    border-bottom-width : 5px;
-    border-top-width:5px;
+    margin-top: 0rem;
+    border-bottom-width : 2px;
+    border-bottom-color: var(--border_color);
+
+    border-top-width:0px;
     border-style: solid;
     /*background-image: url('../images/backgrounds/nav_bg.avif');*/
     background-size:cover;
-    transition: 0.5s;
+    transition: var(--animation_button_time);
 }
 
 
@@ -69,15 +90,23 @@ html{
     align-self: center;
     margin: 10px;
     font-family: 'cool';
-    transition: 0.1s;
+    transition: var(--animation_button_time);
     border-width: 0px;
+
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+    border-style: solid;
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
 }
 
 .sign_in_button:hover {
     width: 200px;
-    background-color: var(--button1_hover);
+    background-color: var(--button_hover_color);
+    border-color: var(--button_hover_border_color);
     font-size: larger;
     border-radius: 50px;
+
 }
 
 .profile_pic{
@@ -91,6 +120,12 @@ html{
     border-color: black;
     border-style:solid;
     margin-top: -5px;
+
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
+    border-style: solid;
+    border-width: var(--border_width);
+    border-color: var(--border_color);
 }
 
 
@@ -102,7 +137,12 @@ html{
 
 
 .navbar div .account{
-  background-color: rgb(53, 50, 225);
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
+    border-style: solid;
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+
   font-family: 'cool';
   width: 180px;
   height: 20px;
@@ -110,7 +150,12 @@ html{
 }   
 
 .navbar div .name{
-    background-color: rgb(31, 161, 241);
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
+    border-style: solid;
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+
     font-family: 'cool';
     width: 180px;
     height: 38px;
@@ -124,19 +169,25 @@ html{
     width: 100px;
     height: 70px;
     border-radius: 10px;
-    background-color: var(--button1);
     align-self: center;
     margin: 10px;
     right: 0px;
     float: right;
     font-family: 'cool';
-    transition: 0.1s;
+    transition: var(--animation_button_time);
     border-width: 0px;
+
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+    border-style: solid;
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
 }
 
 .stats_button:hover {
     width: 200px;
-    background-color: var(--button1_hover);
+    background-color: var(--button_hover_color);
+    border-color: var(--button_hover_border_color);
     font-size: larger;
     border-radius: 50px;
 }
@@ -147,20 +198,25 @@ input{
 }
 
 .submit_button{
-    width: 300px;
+    width: 200px;
     height: 6rem;
-    background-color: var(--button1);
     font-family: 'cool';
     font-size: 20px;
-    border-radius: 50px;
+    border-radius: 10px;
     border-width: 5px;
     transition: 0.3s;
-    border-width: 0px;
+
+    border-width: var(--border_width);
+    border-color: var(--border_color);
+    border-style: solid;
+    background-color: var(--button_bg_color);
+    color: var(--button_text_color);
 }
 
 .submit_button:hover {
     width: 400px;
-    background-color: var(--button1_hover);
+    background-color: var(--button_hover_color);
+    border-color: var(--button_hover_border_color);
     font-size: 25px;
     font-family: 'cool';
     left: calc(50% - 50px);
