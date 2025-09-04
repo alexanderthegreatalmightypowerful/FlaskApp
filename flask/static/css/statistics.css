@@ -44,7 +44,7 @@ td, tr, th{
     background-color: rgb(0, 0, 0);
     border-style: solid;
     border-width: var(--border_width);
-    border-color: var(--border_red_color);
+    border-color: var(--border_gray_color);
     color: var(--button_hover_border_color);
     font-weight: bolder;
     margin-top: 6px;
@@ -56,6 +56,7 @@ td, tr, th{
     /* background-color:rgba(0, 0, 255, 0.252); */
     border-color: var(--button_hover_border_color);
     border-width: var(--border_width);
+    min-height: 40px;
 }
 
 .search_bar{

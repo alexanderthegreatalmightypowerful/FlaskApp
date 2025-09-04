@@ -31,6 +31,7 @@ def read_sql_file_for_tables(file) -> list:
     #print('TABLES:', tables)
     return tables
 
+
 class SqlDatabase():
     """
     Since the website is primarly built for a database, to make it easier to load data through many functions
@@ -59,6 +60,7 @@ class SqlDatabase():
         SqlDatabase.dumps = []
         SqlDatabase.dumps.append(self)
 
+
     def fetchall(self, command = None, close = True) -> tuple: #fetches every value returned from the sql querey
         """
         in most cases, we only need to use one command to get what we want from the database
@@ -75,6 +77,7 @@ class SqlDatabase():
             self.close()
         return self.db.execute(command).fetchall()
     
+
     def fetchone(self, command = None, close = True) -> tuple: #fetches the first value from querey
         if self.closed == True:
             return []
@@ -84,6 +87,7 @@ class SqlDatabase():
             self.close()
         return self.db.execute(command).fetchone()
     
+
     def execute(self, command = None, close = True): #execute command allows any querey to be executed.
         if self.closed == True:
             return []
@@ -95,6 +99,7 @@ class SqlDatabase():
         self.connection.commit()
         return self.db.lastrowid #returns cursor data
     
+
     def close(self): #closes database (can be called manualy or automaticly by querey functions)
         if self.closed == True:
             return
@@ -157,15 +162,17 @@ def organize_sql_data(data) -> dict:
         print(e)
         return {'columns' : ['N/A'], 'data' : 'there is no data', 'rows' : {'N/A':'N/A'},'output' : '', 'tables' : {}, 'failed' : True} #send a failed table request object
 
+
 def update_sql(table, name, value, where, what) -> None: #update something in the database
-    if type(value) == str: #we add extra parenthasies so when it is formated in string, it keeps its string properties
+    if type(value) is str:  # we add extra parenthasies so when it is formated in string, it keeps its string properties
         value = f"'{value}'"
-    if type(what) == str:
+    if type(what) is str:
         what = f'"{what}"'
     base = SqlDatabase()
     base.execute(f'UPDATE {table} SET {name} = {value} WHERE {where} = {what}')
 
-def check_sql_data(data:str) -> bool: #check for malisouse inputs
+
+def check_sql_data(data: str) -> bool:  # check for malisouse inputs
     splitz = data.lower().split(' ')
     if "insert" in splitz:
         return False
@@ -179,7 +186,7 @@ def check_sql_data(data:str) -> bool: #check for malisouse inputs
 
 def get_profile_info(profile) -> dict:
     db = SqlDatabase()
-    data = {"name" : profile, "failed" : False}
+    data = {"name": profile, "failed": False}
     data['rank'] = db.fetchone(f"Select Rank FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
     data['hits'] = db.fetchone(f"Select Hits FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
     data['medals'] = db.fetchall(f"Select Medal FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
@@ -187,22 +194,43 @@ def get_profile_info(profile) -> dict:
     data['picture'] = db.fetchall(f"Select Picture FROM UserData WHERE USERNAME == '{profile}';", close=True)[0]
     return data
 
+
 def sort_request_sql_data(data) -> str:
-    final = "Select UserData.USERNAME From UserData "
+    final = "Select UserData.rank, UserData.USERNAME, UserData.hits From UserData "
 
-    medals = 'JOIN Medals ON UserData.Medal = Medals.Medal Where UserData.Medal == ('
+    # medals = 'JOIN Medals ON UserData.Medal = Medals.Medal Where UserData.Medal = '
+    if data['medals'] != []:
+        medals = ''  # Where UserData.Medal =
 
-    for i, item in enumerate(data['medals']):
-        if i == 0:
-            medals += f' "{item}"'
+        for i, item in enumerate(data['medals']):
+            if i == 0:
+                medals += f'Where (UserData.Medal = {item}'
+            else:
+                medals += f' Or UserData.Medal = {item}'
+
+        medals += ')'
+
+        print("MEDALS:", medals)
+        final += medals
+    if data['achievements'] != []:
+        if data['medals'] != []:
+            ach = ' And '
         else:
-            medals += f' Or "{item}"'
+            ach = " Where "
+        for i, item in enumerate(data['achievements']):
+            if i == 0:
+                ach += f' ( PlayerID In (Select PlayerID From Awarded Where AwardID = (Select ID From Achievements Where Achievement = "{item}"))'
+            else:
+                ach += f' OR PlayerID In (Select PlayerID From Awarded Where AwardID = (Select ID From Achievements Where Achievement = "{item}"))'
 
-    medals += ')'
+        ach += ')'
 
-    print("MEDALS:",medals)
-    final += medals + ";"
+        print("ACHIEVEMENTS:", ach)
+        final += ach
+        # Select UserData.USERNAME From UserData Where PlayerID In (Select PlayerID From Awarded Where AwardID = (Select ID From Achievements Where Achievement = "two birds one stone"));
+        # Select UserData.rank, UserData.USERNAME, UserData.hits From UserData Where UserData.Medal = 1 And PlayerID In (Select PlayerID From Awarded Where AwardID = (Select ID From Achievements Where Achievement ="two birds one stone"))
+
     print("FINAL:", final)
+    final += ';'
 
     return final
-

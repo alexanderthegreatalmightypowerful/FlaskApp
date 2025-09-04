@@ -50,6 +50,9 @@ function destroy_missile(m){
 }
 
 function update_loop(){
+    if(player_dead == true || game_paused == true){
+        return;
+    }
     for(let i = 0; i < live_missiles.length; i++) {
         var m = live_missiles[i];
         if(m.alive == false){
@@ -66,6 +69,7 @@ function update_loop(){
         var pythag = Math.sqrt((mousey - m.y) ** 2 + (mousex - m.x) ** 2);
         //console.log(pythag);
         if(pythag < 10){
+            take_damage(-1);
             m.alive = false;
             continue;
         }
@@ -104,12 +108,24 @@ function update_loop(){
 }
 
 function send_missile(pos){
+    if(tutorial_stage == 3){
+        setTimeout(() => {game_paused = true; hide_show_tutorial(true, "THE RED POLYGONS ARE MISSILES!\nDONT LET THEM HIT YOUR MOUSE!")}, 1000);
+        setTimeout(() => {game_paused = false; hide_show_tutorial(false); tutorial_stage += 1}, 5000);
+    }
+    
+    if(tutorial_stage <= 3){
+        return;
+    }
+
     var miss = new missile();
     //console.log("BOdy Width:", parseInt(window.innerWidth), parseInt(window.innerHeight));
     miss.x = pos[0];
     miss.y = pos[1];
     miss.speed = (1 / missile_time) * 4
     miss.lifetime = 5;
+
+    if(tutorial_stage == 3){
+    }
 }
 
 setInterval(() => {

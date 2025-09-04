@@ -16,6 +16,7 @@ div{
     --animation_button_time: 0.3s;
     --border_color: rgb(49, 251, 27);
     --border_red_color: rgb(251, 27, 27);
+    --border_gray_color: rgb(122, 122, 122);
     --border_width: 3px;
     --button_bg_color: black;
     --button_text_color: white;

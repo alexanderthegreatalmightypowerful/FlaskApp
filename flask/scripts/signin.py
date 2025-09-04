@@ -10,6 +10,7 @@ def hash_data(data) -> str:
     #hasher.update(data.encode('utf-8'))
     return hasher.hexdigest()
 
+
 def compare_sign_in(username, password, message) -> tuple:
     """
     when a user attempts a sign in, we have to re-hash the inputed password and compare the hashe
@@ -35,6 +36,7 @@ def compare_sign_in(username, password, message) -> tuple:
         return (False, message)
 
     return (False, message)
+
 
 def make_new_account(username, password, message) -> tuple:
     """
@@ -69,18 +71,25 @@ def make_new_account(username, password, message) -> tuple:
 
     querrey = f"""
 INSERT INTO UserData
-(PlayerID, USERNAME, Money, Medal, Hits, Rank, PASSWORD, Wins, Achievements, Picture) 
+(PlayerID, USERNAME, Money, Medal, Hits, Rank, PASSWORD, Wins,  Picture) 
 VALUES 
-({data + 1}, '{username}', 20, 0, 0, 1000, "{hash_data(password)}", 0, 0, 0)    
+({data + 1}, '{username}', 20, 0, 0, 1000, "{hash_data(password)}", 0,  0)    
     """
 
+    querrey2 = f"""
+INSERT INTO Awarded
+(AwardID, PlayerID)
+VALUES 
+(4 , {data + 1})
+    """
     try:
         base.execute(querrey, close=False)
         base.connection.commit()
+        base.execute(querrey2, close=False)
         base.close()
-    except:
+    except Exception as e:
+        print(e)
         message = 'Username already taken'
         return (False, message)
-    
     print("MADE NEW ACCOUNT!")
     return (True, message)

@@ -4,8 +4,13 @@ var coords = {0 : 0, 1 : 0};
 var speed = 6;
 var dead = false;
 
+var inv = false;
+
 var player_max_hp = 6;
 var player_hp = 6;
+
+var tutorial_movement = {'w' : false, 'a' : false, 's' : false, 'd' : false}
+var move_tutorial_state = true;
 
 var player = document.getElementById('player');
 
@@ -39,18 +44,52 @@ function move(coord = [0, 0]){
     }
 
     else if(coord[1] == 1){
+        tutorial_movement['w'] = true;
         player.style.rotate = '90deg';
     }
     else if(coord[1] == -1){
+        tutorial_movement['s'] = true;
         player.style.rotate = '270deg';
     }
     else if(coord[0] == 1){
+        tutorial_movement['d'] = true;
         player.style.rotate = '180deg';
     }
     else if(coord[0] == -1){
+        tutorial_movement['a'] = true;
         player.style.rotate = '0deg';
     }
 
+    if((coord[0] != 0 || coord[1] != 0) && move_tutorial_state == true){
+    let w = '<span style="color: grey;">W</span>';
+    if(tutorial_movement['w'] == true){
+        w = '<span style="color: green;">W</span>';
+    }
+
+    let a = '<span style="color: grey;">A</span>';
+    if(tutorial_movement['a'] == true){
+        a = '<span style="color: green;">A</span>';
+    }
+
+    let s = '<span style="color: grey;">S</span>';
+    if(tutorial_movement['s'] == true){
+        s = '<span style="color: green;">S</span>';
+    }
+
+    let d = '<span style="color: grey;">D</span>';
+    if(tutorial_movement['d'] == true){
+        d = '<span style="color: green;">D</span>';
+    }
+
+    var el = document.getElementById('tutorial_text');
+    el.innerHTML = `${w}${a}${s}${d}`;
+    }
+
+    if(tutorial_movement['w'] == true && tutorial_movement['a'] == true && tutorial_movement['s'] == true && tutorial_movement['d'] == true && move_tutorial_state == true){
+        move_tutorial_state = false;
+        tutorial_stage += 1;
+        hide_show_tutorial(false);
+    }
 
 
     if (coords[0] + coord[0] * speed > 0 && coords[0] + coord[0] * nspeed < window.innerWidth - 50){
@@ -79,11 +118,16 @@ function move(coord = [0, 0]){
 }
 
 function take_damage(damage = 0){
+    if(inv == true){
+        return;
+    }
     console.log("PLAYER TOOK DAMAGE!");
     player_hp += damage;
     if(player_hp <= 0){
         player.style.backgroundColor = `rgb(${0}, ${0}, 0)`;
+        document.getElementById('DIED_TEXT').style.visibility = 'visible';
         dead = true;
+        player_dead = true;
         return;
     }
 
@@ -96,6 +140,10 @@ function take_damage(damage = 0){
 var damage_inverval = 0;
 
 setInterval(() => {
+    if(player_dead == true || game_paused == true){
+        return;
+    }
+
     move([held_keys['d'] - held_keys['a'], held_keys['w'] - held_keys['s']]);
 
     if(live_rocks != undefined)

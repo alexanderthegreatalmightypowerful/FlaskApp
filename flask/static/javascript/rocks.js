@@ -75,6 +75,9 @@ function rock_update_loop(){
 }
 
 setInterval(() => {
+    if(player_dead == true || game_paused == true){
+        return;
+    }
     var new_rock_list = [];
     for(let i = 0; i < live_rocks.length; i++){
         if(live_rocks[i].alive == true){

@@ -7,6 +7,12 @@ var boss = null;
 var x_speed = 0.1;
 var y_speed = 0.2;
 
+var tutorial_stage = 0;
+
+var game_paused = false;
+
+var player_dead = false;
+
 var rotation_speed = 0;
 var boss_rotation = 0;
 
@@ -24,7 +30,7 @@ const flip = (data) => Object.fromEntries(
     );
 
 const stages = {0 : "start", 5 : 'awake', 10 : 'confused', 15 : "angry", 20 : 'mad',
-                25 : "furious", 30 : 'empty', 35 : 'villian', 40 : "god"
+                25 : "furious", 30 : 'empty', 35 : 'villian', 40 : "god", 45 : 'dead'
 }
 
 const stagesr = flip(stages);
@@ -32,18 +38,37 @@ const stagesr = flip(stages);
 const stage_speeds = {"start" : [40, 30, 0, 'awake'] , 'awake' : [1, 1, 0, 'confused'] , 
                     'confused' : [1.8, 1.8, 1, 'angry'] , "angry" : [2.4, 2.4, 1.5, 'mad'], 
                     'mad' : [3, 3, 2.2, 'furious'], 'furious' : [3.5, 3.5, 2.8, 'empty'], 'empty' : [4, 4, 4, 'villian'],
-                    'villian' : [4.3, 4.3, 5, 'god'], 'god' : [5, 5, 12, 'god']}
+                    'villian' : [4.3, 4.3, 5, 'god'], 'god' : [5, 5, 12, 'dead'], 'dead' : [0, 0, 12, 'dead']}
 
 const stage_images = {'start' : '1', 'awake' : '2', 'confused' : '3', 
                     'angry' : '4', 'mad' : '5', 'furious' : '6', 'empty' : '7',
-                    'villian' : '8', 'god' : '9'}
+                    'villian' : '8', 'god' : '9', 'dead' : '10'}
 
 
 var boss_hp = 5;
 
+function hide_show_tutorial(value = false, text = ""){
+    let el = document.getElementById('tutorial_bg');
+    if(value == false){
+       el.style.width = '0px';
+       el.style.visibility = 'hidden';
+    }else{
+      el.style.width = '100%';
+       el.style.visibility = 'visible';
+       document.getElementById('tutorial_text').innerText = text;
+    }
+}
+
+
 function boss_upgrade(){
     if(boss == null){
         boss = document.getElementById('sadface');
+    }
+
+    
+    if(tutorial_stage == 1){
+        setTimeout(() => {game_paused = true; hide_show_tutorial(true, "AVOID THE BOSS!")}, 3000);
+        setTimeout(() => {game_paused = false; hide_show_tutorial(false); tutorial_stage += 1}, 8000);
     }
 
     upgrading_boss = true;
@@ -52,6 +77,11 @@ function boss_upgrade(){
     setTimeout(() => {upgrading_boss=false;facestages();}, 900);
     send_request({'hits' : ClickCounter-before_click}, 'get_clicks', null);
     before_click = ClickCounter;
+
+    if(tutorial_stage == 4){
+        setTimeout(() => {game_paused = true; hide_show_tutorial(true, "The boss upgrades over time. It will get harder from here")}, 1000);
+        setTimeout(() => {game_paused = false; hide_show_tutorial(false); tutorial_stage += 1}, 4000);
+    }
 }
 
 function bounce(){
@@ -64,6 +94,9 @@ function bounce(){
     var missile_timer = 0;
 
     setInterval(() => {
+        if(player_dead == true || game_paused == true){
+        return;
+        }
         if(upgrading_boss == true){
             return;
         }
@@ -137,6 +170,9 @@ function lower_boss_bar(hp_bar){
 }
 
 function bossclicked(){
+    if(player_dead == true || game_paused == true){
+        return;
+    }
     ClickCounter += 1;
     boss_hp -= 1;
 
@@ -177,6 +213,11 @@ function bossclicked(){
     ro = new rock();
     ro.body.style.backgroundImage = `url('../static/images/faces/${stage_images[stage]}.png')`;
 
+    if(tutorial_stage == 2){
+        setTimeout(() => {game_paused = true; hide_show_tutorial(true, "WATCH OUT, MINIONS SPAWN WHEN YOU HIT THE BOSS!")}, 1000);
+        setTimeout(() => {game_paused = false; hide_show_tutorial(false); tutorial_stage += 1}, 5000);
+    }
+
     if(stages.hasOwnProperty(ClickCounter) == true){
         missiles_enabled = true;
         console.log('NEW STAGE HAS BEGUN');
@@ -207,4 +248,7 @@ function bossclicked(){
         
     }
 }
+
+
+//<span style="color: blue;">blue text</span>
 

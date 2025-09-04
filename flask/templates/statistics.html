@@ -5,31 +5,44 @@
 
 <center>
   <br>
-SEARCH: <input onkeydown="search()" id = 'search' class = "search_bar"> 
+SEARCH: <input onkeydown="search()" id = 'search' class = "search_bar" placeholder="search a name"> 
 <button class = 'search_button' onclick = "search_name()">&#8981;</button>
 
 <br><br><br>
+<div class = "bordered_div">
+<h1 style = "color: white; margin: 0px;">Filter By Medals</h1>
+</div>
+<br>
 <div id = 'medals' class = "bordered_div">
-<button class = "select_button" onclick = "select_button('Styrofoam', 'achievments')" id = "Styrofoam">Styrofoam</button>
-<button class = "select_button" onclick = "select_button('Plastic', 'achievments')" id = "Plastic">Plastic</button>
-<button class = "select_button" onclick = "select_button('Wood', 'achievments')" id = "Wood">Wood</button>
-<button class = "select_button" onclick = "select_button('Iron', 'achievments')" id = "Iron">Iron</button>
-<button class = "select_button" onclick = "select_button('Bronze', 'achievments')" id = "Bronze">Bronze</button>
-<button class = "select_button" onclick = "select_button('Silver', 'achievments')" id = "Silver">Silver</button>
-<button class = "select_button" onclick = "select_button('Gold', 'achievments')" id = "Gold">Gold</button>
-<button class = "select_button" onclick = "select_button('Platinum', 'achievments')" id = "Platinum">Platinum</button>
-<button class = "select_button" onclick = "select_button('Ruby', 'achievments')" id = "Ruby">Ruby</button>
-<button class = "select_button" onclick = "select_button('Diamond', 'achievments')" id = "Diamond">Diamond</button>
-<button class = "select_button" onclick = "select_button('Emerald', 'achievments')" id = "Emerald">Emerald</button>
-<button class = "select_button" onclick = "select_button('Degenerate', 'achievments')" id = "Degenerate">Degenerate</button>
+<button class = "select_button" onclick = "select_button('Styrofoam', 'medal', 0)" id = "Styrofoam">Styrofoam</button>
+<button class = "select_button" onclick = "select_button('Plastic', 'medal', 1)" id = "Plastic">Plastic</button>
+<button class = "select_button" onclick = "select_button('Wood', 'medal', 2)" id = "Wood">Wood</button>
+<button class = "select_button" onclick = "select_button('Iron', 'medal', 3)" id = "Iron">Iron</button>
+<button class = "select_button" onclick = "select_button('Bronze', 'medal', 4)" id = "Bronze">Bronze</button>
+<button class = "select_button" onclick = "select_button('Silver', 'medal', 5)" id = "Silver">Silver</button>
+<button class = "select_button" onclick = "select_button('Gold', 'medal', 6)" id = "Gold">Gold</button>
+<button class = "select_button" onclick = "select_button('Platinum', 'medal', 7)" id = "Platinum">Platinum</button>
+<button class = "select_button" onclick = "select_button('Ruby', 'medal', 8)" id = "Ruby">Ruby</button>
+<button class = "select_button" onclick = "select_button('Diamond', 'medal', 9)" id = "Diamond">Diamond</button>
+<button class = "select_button" onclick = "select_button('Emerald', 'medal', 10)" id = "Emerald">Emerald</button>
+<button class = "select_button" onclick = "select_button('Degenerate', 'medal', 11)" id = "Degenerate">Degenerate</button>
 </div>
 
+<br>
+<div class = "bordered_div">
+<h1 style = "color: white; margin: 0px;">Filter By Achievements</h1>
+</div>
 <br>
 <div id = 'achievments'  class = "bordered_div">
-<button class = "select_button">2 birds...</button>
+<button class = "select_button" onclick = "select_button('Noob', 'achievement', 'Noob')" id = "Noob">Noob</button>
+<button class = "select_button" onclick = "select_button('Starter', 'achievement', 'Starter')" id = "Starter">Starter</button>
+<button class = "select_button" onclick = "select_button('Loser', 'achievement', 'Loser')" id = "Loser">Loser</button>
 </div>
 <br>
-
+<div class = "bordered_div">
+<h1 style = "color: white; margin: 0px;">Filter By Hit Amount</h1>
+</div>
+<br>
 <div id = 'hits'  class = "bordered_div">
 <style>
   .range_container {
