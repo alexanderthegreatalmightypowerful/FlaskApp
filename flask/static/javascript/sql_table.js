@@ -64,14 +64,7 @@ function make_data_table(data){
 
 }
 
-function get_all_sql_data(data = null){
-  send_request('SELECT USERNAME FROM UserData;', 'get_sql_data', make_data_table);
-}
 
-setTimeout(() => {
-  //sendData();
-  get_all_sql_data();
-}, 10)
 
 
 function get_sql_data(data = ""){
@@ -91,10 +84,6 @@ function search(ele){
     if(event.key === 'Enter') {
         search_name();       
     }
-}
-
-function send_cusom_sql(){
-  
 }
 
 

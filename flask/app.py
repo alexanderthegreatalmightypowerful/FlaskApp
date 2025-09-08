@@ -1,7 +1,8 @@
 """
 Author : Alexander Krakowiak
 
-This is the main script that hold the flask routing code for the entertainment website
+This is the main script that hold the flask routing code for the entertainment 
+website
 
 The purpose of this application to deliver a webpage experience
 """
@@ -17,6 +18,7 @@ import json
 from scripts.signin import make_new_account, compare_sign_in
 # from sqlite3 import OperationalError
 from scripts.flask_sess import get_cookie, get_user_by_cookie
+from scripts.leaderboards import update_leaderboard
 
 
 app = Flask(__name__)  # create flask app object
@@ -150,11 +152,11 @@ def get_sql_data():
 @app.route('/get_profile_data', methods=['POST', 'GET'])
 def get_profile_data():
     try:
+        print(get_cookie(request))
         cookie = session[get_cookie(request)]
     except Exception as e:
-        print(e)
+        print("THIS IS THE ERROR!:", e)
         return jsonify({'failed': True})
-    
     data = get_profile_info(cookie)
     print(data)
     return jsonify(data)
@@ -211,6 +213,7 @@ def get_clicks():
     hits += data['hits']
     # update the hit column on a player
     update_sql('UserData', 'Hits', hits, 'USERNAME', user)
+    update_leaderboard()
 
     return jsonify({})
 
@@ -222,6 +225,7 @@ def world_statistics_data():
 
 @app.route("/world_statistics_data_custom", methods=['POST', 'GET'])
 def world_statistics_data_custom():
+    update_leaderboard()
     data = jsonify_request(request.get_data())
     print(data)
     return_string = sort_request_sql_data(data)
@@ -233,6 +237,10 @@ def world_statistics_data_custom():
 
 # INITATE FLASK SERVER / APP
 
+
+# leaderboard_update_thread = threading.Thread(target=update_leaderboard_loop)
+# leaderboard_update_thread.start()
+# update_leaderboard()
 
 if __name__ == '__main__':
     app.run(debug=True)

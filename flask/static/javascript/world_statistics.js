@@ -1,11 +1,5 @@
 
 
-function set_properties(data){
-    console.log(data);
-}
-
-send_request("get data", 'world_statistics_data', set_properties);
-
 var total_string = '';
 var select_all = true;
 var clicked_medals_buttons = [];
@@ -15,6 +9,7 @@ var hits_range = [0, 99999];
 var medal_data = {0 : false, 1 : false, 2:false, 3:false, 4:false, 
   5:false, 6:false, 7:false, 8:false, 9:false,10:false, 11:false
 };
+
 var achievements_data = {'Loser' : false, 'Noob' : false, 'Starter' : false}
 
 function receive_searches(data){
@@ -39,6 +34,11 @@ function search_for(){
 
   send_request({'medals' : medals2, 'achievements' : ach2}, 'world_statistics_data_custom', receive_searches);
 }
+
+setTimeout(() => {
+  //sendData();
+  search_for();
+}, 10)
 
 function select_button(button, type, id){
   if(clicked_medals_buttons.includes(button) && type == 'medal'){

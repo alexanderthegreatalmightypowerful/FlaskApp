@@ -13,6 +13,7 @@ var tutorial_movement = {'w' : false, 'a' : false, 's' : false, 'd' : false}
 var move_tutorial_state = true;
 
 var player = document.getElementById('player');
+var mouse_player = document.getElementById('mouse');
 
 var was_holding = false;
 
@@ -189,10 +190,12 @@ setInterval(() => {
 
 
 
+function mousepos(p){
+    mouse_player.style.left = `${p.pageX - 23}px`;
+    mouse_player.style.top = `${p.pageY - 26}px`;
+}
 
-
-
-
+addEventListener('mousemove', mousepos, false);
 
 
 

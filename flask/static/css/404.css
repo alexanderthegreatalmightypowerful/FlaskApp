@@ -29,7 +29,8 @@ html{
     height: 50px;
     background-color: rgb(0, 0, 0, 0);
     z-index: 10;
-    background-size: contain;
+    background-size:contain;
+    background-repeat: no-repeat;
     background-image: url('../images/textures/missile.png'); 
     border-width: 0px;
 }
@@ -94,6 +95,23 @@ html{
     bottom: 0px;
     background-blend-mode: multiply;
     offset-position: -25px -25px;
+}
+
+.mouse{
+    background-color: rgba(100, 174, 95, 0);
+    position: fixed;
+    border-width: 0px;
+    left: 0px;
+    bottom: 0px;
+    background-blend-mode: multiply;
+    offset-position: -25px -25px;
+    width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-bottom: 50px solid #00ff08;
+    rotate: -25deg;
+    pointer-events: none;
 }
 
 @keyframes stop_player_animation{

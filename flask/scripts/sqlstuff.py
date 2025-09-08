@@ -163,7 +163,7 @@ def organize_sql_data(data) -> dict:
         return {'columns' : ['N/A'], 'data' : 'there is no data', 'rows' : {'N/A':'N/A'},'output' : '', 'tables' : {}, 'failed' : True} #send a failed table request object
 
 
-def update_sql(table, name, value, where, what) -> None: #update something in the database
+def update_sql(table, name, value, where, what) -> None: # update something in the database
     if type(value) is str:  # we add extra parenthasies so when it is formated in string, it keeps its string properties
         value = f"'{value}'"
     if type(what) is str:
@@ -187,11 +187,11 @@ def check_sql_data(data: str) -> bool:  # check for malisouse inputs
 def get_profile_info(profile) -> dict:
     db = SqlDatabase()
     data = {"name": profile, "failed": False}
-    data['rank'] = db.fetchone(f"Select Rank FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
-    data['hits'] = db.fetchone(f"Select Hits FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
-    data['medals'] = db.fetchall(f"Select Medal FROM UserData WHERE USERNAME == '{profile}';", close=False)[0]
-    data['achievements'] = db.fetchall(f"Select Achievements FROM UserData WHERE USERNAME == '{profile}';", close=True)[0]
-    data['picture'] = db.fetchall(f"Select Picture FROM UserData WHERE USERNAME == '{profile}';", close=True)[0]
+    data['rank'] = db.fetchone(f"Select Rank FROM UserData WHERE USERNAME = '{profile}';", close=False)[0]
+    data['hits'] = db.fetchone(f"Select Hits FROM UserData WHERE USERNAME = '{profile}';", close=False)[0]
+    data['medals'] = db.fetchall(f"Select Medal FROM UserData WHERE USERNAME = '{profile}';", close=False)[0]
+    data['achievements'] = None
+    data['picture'] = db.fetchall(f"Select Picture FROM UserData WHERE USERNAME = '{profile}';", close=True)[0]
     return data
 
 
@@ -231,6 +231,6 @@ def sort_request_sql_data(data) -> str:
         # Select UserData.rank, UserData.USERNAME, UserData.hits From UserData Where UserData.Medal = 1 And PlayerID In (Select PlayerID From Awarded Where AwardID = (Select ID From Achievements Where Achievement ="two birds one stone"))
 
     print("FINAL:", final)
-    final += ';'
+    final += 'ORDER BY UserData.rank ASC;'
 
     return final

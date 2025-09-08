@@ -210,8 +210,10 @@ function bossclicked(){
         return;
     }
 
+    if(tutorial_stage > 2){
     ro = new rock();
     ro.body.style.backgroundImage = `url('../static/images/faces/${stage_images[stage]}.png')`;
+    }
 
     if(tutorial_stage == 2){
         setTimeout(() => {game_paused = true; hide_show_tutorial(true, "WATCH OUT, MINIONS SPAWN WHEN YOU HIT THE BOSS!")}, 1000);
@@ -247,6 +249,10 @@ function bossclicked(){
         }, 100);
         
     }
+}
+
+function skip_tutorial(){
+    tutorial_stage = 100;
 }
 
 

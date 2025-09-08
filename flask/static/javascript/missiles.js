@@ -102,6 +102,8 @@ function update_loop(){
             m.rot += 1;
             m.body.style.rotate = `${m.rot}deg`;
 
+            m.body.style.width = `${50 / m.lived}px`;
+
         }
     }
 
