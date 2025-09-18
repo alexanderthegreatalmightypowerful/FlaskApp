@@ -243,6 +243,7 @@ def sort_request_sql_data(data) -> str:
     final = """Select UserData.rank, UserData.USERNAME, 
     UserData.hits From UserData """
 
+    # generates medals join querey
     if data['medals'] != []:
         medals = ''  # Where UserData.Medal =
 
@@ -256,6 +257,7 @@ def sort_request_sql_data(data) -> str:
 
         print("MEDALS:", medals)
         final += medals
+    # generates many to many querey
     if data['achievements'] != []:
         if data['medals'] != []:
             ach = ' And '
@@ -275,7 +277,7 @@ def sort_request_sql_data(data) -> str:
 
         print("ACHIEVEMENTS:", ach)
         final += ach
-    
+    # find a range of hits
     if len(data['hits']) > 1:
         if data['medals'] != [] or data['achievements'] != []:
             hit = ' And '
