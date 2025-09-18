@@ -1,3 +1,7 @@
+/*
+This function is what communicates with the backend
+*/
+
 function send_request(command = '', func = '', rfunc = null, bfunc = null) { 
     var value = command;
     const url = `/${func}`;
@@ -14,7 +18,7 @@ function send_request(command = '', func = '', rfunc = null, bfunc = null) {
             dataType : 'json',
           }).done(function (data) {
             try{
-              if(rfunc != null){
+              if(rfunc != null){ //if we specified a success return function, call
               rfunc(data);
               }
             }catch(e){
@@ -23,6 +27,9 @@ function send_request(command = '', func = '', rfunc = null, bfunc = null) {
           
           }).fail(function (error){
             alert(error);
+            if(bfunc != null){//if we specified a failed return function, call
+              bfunc();
+            }
           });
   
   }

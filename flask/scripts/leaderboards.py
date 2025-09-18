@@ -5,7 +5,7 @@ import time
 def update_leaderboard() -> None:
     """
     this function sorts the ranks of the users by how many hits
-    they have. The mosre hits they have, the higher their rank is
+    they have. The more hits they have, the higher their rank is
 
     user with the highest rank gets the goat achievement
     """

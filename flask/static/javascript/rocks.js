@@ -1,3 +1,7 @@
+/*
+ROck obsitcal creation script
+*/
+
 rock_id_counter = 0;
 live_rocks = [];
 
@@ -8,7 +12,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-class rock{
+class rock{ //rock element class
     counter = 0;
     constructor(){
         //super();
@@ -52,15 +56,15 @@ function destroy_rock(m){
     m.alive = false;
 }
 
-function rock_update_loop(){
+function rock_update_loop(){ //rock movement update loop
     for(let i = 0; i < live_rocks.length; i++) {
         var m = live_rocks[i];
         if(m.alive == false){
             continue;
         }
        
-        m.x += m.speed * m.direction[0];
-        m.y += m.speed * m.direction[1];
+        m.x += m.speed * m.direction[0] * 0.8;
+        m.y += m.speed * m.direction[1] * 0.8;
 
         m.rot += m.speed;
 
@@ -79,7 +83,7 @@ setInterval(() => {
         return;
     }
     var new_rock_list = [];
-    for(let i = 0; i < live_rocks.length; i++){
+    for(let i = 0; i < live_rocks.length; i++){ //check if rock is expired
         if(live_rocks[i].alive == true){
             new_rock_list.push(live_rocks[i]);
         }else{

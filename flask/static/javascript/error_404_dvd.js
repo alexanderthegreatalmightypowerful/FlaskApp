@@ -1,4 +1,8 @@
-//make sad face bounce around scrren like the dvd icon on a tv
+/* 
+Main script that controls the game (main game loops / functions)
+*/
+
+
 var ClickCounter = 0;
 var bossfight_started = false;
 var stage = 'start';
@@ -12,12 +16,13 @@ var tutorial_stage = 0;
 var game_paused = false;
 
 var player_dead = false;
+var boss_dead = false;
 
 var rotation_speed = 0;
 var boss_rotation = 0;
 
 var send_missiles = false;
-var missile_time = 4;
+var missile_time = 6;
 
 var upgrading_boss = false;
 
@@ -29,8 +34,8 @@ const flip = (data) => Object.fromEntries(
       .map(([key, value]) => [value, key])
     );
 
-const stages = {0 : "start", 5 : 'awake', 10 : 'confused', 15 : "angry", 20 : 'mad',
-                25 : "furious", 30 : 'empty', 35 : 'villian', 40 : "god", 45 : 'dead'
+const stages = {0 : "start", 5 : 'awake', 10 : 'confused', 22 : "angry", 38 : 'mad',
+                55 : "furious", 78 : 'empty', 104 : 'villian', 130 : "god", 150 : 'dead'
 }
 
 const stagesr = flip(stages);
@@ -85,15 +90,18 @@ function boss_upgrade(){
 }
 
 function bounce(){
+    //boss movement
     var colors = ['(255, 0, 0)', '(0, 255, 0)', '(0, 0, 255)'];
     const el = document.getElementById('sadface');
     boss = el;
-    var x = 0;
-    var y = 0;
+    var x = window.innerWidth / 2;
+    var y = window.innerHeight / 2;
+    el.style.left = `${x}px`
+    el.style.bottom = `${y}px`
 
     var missile_timer = 0;
 
-    setInterval(() => {
+    setInterval(() => { //set missile loop
         if(player_dead == true || game_paused == true){
         return;
         }
@@ -116,6 +124,8 @@ function bounce(){
         el.style.bottom = `${y}px`;
         boss_rotation += rotation_speed;
         boss.style.rotate = `${boss_rotation}deg`;
+
+        //tracking code
 
         if(x >= window.innerWidth-200){
             x_speed = Math.abs(x_speed) * -1;
@@ -149,6 +159,7 @@ function bounce(){
 }
 
 function facestages(){
+    //change boss stage
     var title = document.getElementById('404_reader');
 
     if(boss == null){
@@ -159,18 +170,26 @@ function facestages(){
 
     title.innerText = `BOSS IS: ${stage.toUpperCase()}`;
 
+    if(stage == 'dead'){
+        boss_dead = true;
+        let el = document.getElementById("WIN_TEXT");
+        el.style.visibility = 'visible'
+        send_request("dataata", 'record_win');
+    }
+
 }
 
 function lower_boss_bar(hp_bar){
+    //damage boss
     var hp = (boss_hp / (parseInt(stagesr[stage_speeds[stage][3]]) - parseInt(stagesr[stage]))) * 100;
     //console.log(hp, stagesr);
     hp_bar.style.width = `${hp}%`;
     hp_bar.style.backgroundColor = `rgb(${255}, ${hp * 2.55}, 0.0)`;
-
 }
 
 function bossclicked(){
-    if(player_dead == true || game_paused == true){
+    //on boss click function
+    if(player_dead == true || game_paused == true || boss_dead == true){
         return;
     }
     ClickCounter += 1;
@@ -204,6 +223,10 @@ function bossclicked(){
 
     var hp_bar = document.getElementById('boss_bar').children[0];
 
+    let cm = document.getElementById("click_me");
+    if(cm != null){
+        cm.remove();
+    }
     lower_boss_bar(hp_bar);
 
     if(stage == 'start'){
@@ -253,8 +276,14 @@ function bossclicked(){
 
 function skip_tutorial(){
     tutorial_stage = 100;
+    hide_show_tutorial(false);
+    document.getElementById('skip').remove();
 }
 
+
+function restart_game(){
+    window.location.reload();
+}
 
 //<span style="color: blue;">blue text</span>
 

@@ -1,3 +1,4 @@
+//mouse missile script that has tracking loop and missile class object
 
 var live_missiles = [];
 var mousex = 1;
@@ -9,7 +10,7 @@ var missile_count_spawn_timer = 0;
 
 var missile_id_counter = 0;
 
-class missile{
+class missile{ //missile element class
     counter = 0;
     constructor(){
         //super();
@@ -123,7 +124,7 @@ function send_missile(pos){
     //console.log("BOdy Width:", parseInt(window.innerWidth), parseInt(window.innerHeight));
     miss.x = pos[0];
     miss.y = pos[1];
-    miss.speed = (1 / missile_time) * 4
+    miss.speed = (1 / missile_time) * 2.5
     miss.lifetime = 5;
 
     if(tutorial_stage == 3){
@@ -147,7 +148,7 @@ setInterval(() => {
             new_missile_list.push(live_missiles[i]);
             //console.log('Destroyed Missile', new_missile_list);
         }else{
-            destroy_missile(live_missiles[i]);
+            destroy_missile(live_missiles[i]); //discard dead missiles
         }
     }
     live_missiles = new_missile_list;

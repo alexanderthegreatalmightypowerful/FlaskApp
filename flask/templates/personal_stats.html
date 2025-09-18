@@ -25,7 +25,7 @@
 
             <h2 id = 'info1'>Rank: </h2>
             <h2 id = 'info2'>Hits: </h2>
-            <h2 id = 'info3'>Medals: </h2>
+            <h2 id = 'info3'>Medal: </h2>
             <h2 id = 'info4'>Achievements: </h2>
         </div>
 
@@ -54,7 +54,7 @@ function set_data(data){
     if(data['failed'] == false){
         document.getElementById("info1").innerText = `Rank: ${data['rank']}`;
         document.getElementById("info2").innerText = `Hits: ${data['hits']}`;
-        document.getElementById("info3").innerText = `Medals: ${data['medals']}`;
+        document.getElementById("info3").innerText = `Medal: ${data['medals']}`;
         document.getElementById("info4").innerText = `Achievements: ${data['achievements']}`;
         document.getElementById('profile_pic2').style.backgroundImage = `url('static/images/profiles/${data['picture']}.png')`; 
     }

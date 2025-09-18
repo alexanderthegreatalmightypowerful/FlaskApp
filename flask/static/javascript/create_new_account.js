@@ -1,4 +1,8 @@
+/* Backend connection to request new account creation*/
+
 function do_account(data){
+    //checks to see if the account was created
+    //if there was an error, show the error here
     console.log(data);
     if(data['result'] == true){
         window.sessionStorage.setItem('username', data['username']);
@@ -15,6 +19,7 @@ function do_account(data){
 }
 
 function create_new_account(){
+    //sends account creation request
     var username = document.getElementById('username');
     var password = document.getElementById('password');
     send_request(

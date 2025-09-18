@@ -1,10 +1,17 @@
+/*
+These functions allow the user to select a new profile picture on 
+their personal statisitcs page
+*/ 
+
 var menu_enabled = false;
+
 
 function open_profile_choose_menu(){
     let b = document.getElementById("choose_profiles_div");
     b.style.animation = "choose_profiles_div_in 0.7s forwards";
     menu_enabled = true;
 }
+
 
 function close_profile_choose_menu(selection = "")
 {

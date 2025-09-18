@@ -1,4 +1,6 @@
-
+/*
+Creates the nice table from the recieved data on the filter page
+*/
 
 function make_buttons(data){
   //buttons_array
@@ -26,7 +28,7 @@ function make_buttons(data){
   
 }
 
-function make_data_table(data){
+function make_data_table(data){ //generates the table
   if(data['failed'] == true){
     console.log("OH NO! I Can't seem to find what you're looking for!");
     return;
@@ -71,7 +73,8 @@ function get_sql_data(data = ""){
   send_request(data, 'get_sql_data', make_data_table);
 }
 
-function search_name(){
+function search_name(){ //search by username filter input
+  //function ignores button filter inputs
   name1 = document.getElementById('search').value;
   if(name1 == ''){
     get_sql_data("Select rank, USERNAME, hits From UserData ORDER BY rank ASC;");

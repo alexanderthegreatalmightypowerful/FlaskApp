@@ -1,3 +1,6 @@
+//button route functions
+
+
 function go_to_game_page(){
     window.location.href = '404';
 }

@@ -1,4 +1,4 @@
-from .sqlstuff import *
+from .sqlstuff import SqlDatabase
 import hashlib
 
 
@@ -7,31 +7,34 @@ def hash_data(data) -> str:
     Using hash type md5 to hash passwords
     """
     hasher = hashlib.md5(data.encode())
-    #hasher.update(data.encode('utf-8'))
+    # hasher.update(data.encode('utf-8'))
     return hasher.hexdigest()
 
 
 def compare_sign_in(username, password, message) -> tuple:
     """
-    when a user attempts a sign in, we have to re-hash the inputed password and compare the hashe
-    to the password hash under the inputed username. if no username exists or the hashes dont match, 
+    when a user attempts a sign in, we have to re-hash the inputed password
+    and compare the hashes
+    to the password hash under the inputed username. if no username exists or
+    the hashes dont match, 
     we return an error code and message describing what was incorrect.
     """
     base = SqlDatabase()
     try:
-        data = base.fetchone(f"SELECT PASSWORD, USERNAME FROM UserData WHERE USERNAME == '{username}';")
+        data = base.fetchone(f"""SELECT PASSWORD, USERNAME 
+                             FROM UserData WHERE USERNAME = '{username}';""")
         print('THE DATA IS:', data)
         has = hash_data(password)
-        #print(data[0], has)
+        # print(data[0], has)
         if data[1] == username and data[0] == has:
             return (True, message)
-        if data == None or data[0] != has:
+        if data is None or data[0] != has:
             message = 'Wrong username or password'
             print('MESSAGE:', message)
             return (False, message)
     except Exception as e:
         print("SIGN IN ERROR:", e)
-        message = f'{e}'
+        message = 'Oops something went wrong. May be wrong credentials'
         print('MESSAGE:', message)
         return (False, message)
 
@@ -41,10 +44,14 @@ def compare_sign_in(username, password, message) -> tuple:
 def make_new_account(username, password, message) -> tuple:
     """
     when creating a new account, we have some rules to put in place:
-    no spaces in username or password, not more than 16 characters (for username), no less than 6 characters,
-    no more than 30 character (for password). We check the length of the passwords here in the backened because
-    it is possible to exploit the frontend to bypass the maxiumum amount of characters leading to a database bomb where
-    the user inputs an increadibly large number of character, filling up the backend ram and databases size.
+    no spaces in username or password, not more than 16 characters 
+    (for username), no less than 6 characters,
+    no more than 30 character (for password). We check the length 
+    of the passwords here in the backened because
+    it is possible to exploit the frontend to bypass the maxiumum amount 
+    of characters leading to a database bomb where
+    the user inputs an increadibly large number of character, filling up 
+    the backend ram and databases size.
     """
 
     if len(username) > 16:
@@ -67,13 +74,13 @@ def make_new_account(username, password, message) -> tuple:
         return (False, message)
 
     base = SqlDatabase()
-    data = len(base.fetchall("Select * From UserData", close = False))
+    data = len(base.fetchall("Select * From UserData", close=False))
 
     querrey = f"""
 INSERT INTO UserData
 (PlayerID, USERNAME, Money, Medal, Hits, Rank, PASSWORD, Wins,  Picture) 
 VALUES 
-({data + 1}, '{username}', 20, 0, 0, 1000, "{hash_data(password)}", 0,  0)    
+({data + 1}, '{username}', 20, 0, 0, 1000, "{hash_data(password)}", 0,  1)    
     """
 
     querrey2 = f"""

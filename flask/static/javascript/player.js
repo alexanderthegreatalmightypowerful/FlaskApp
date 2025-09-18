@@ -1,3 +1,5 @@
+//Main Player movement script
+
 var held_keys = {'w' : 0, 's' : 0, 'a' : 0, 'd' : 0};
 var timed_keys = {};
 var coords = {0 : 0, 1 : 0};
@@ -23,10 +25,11 @@ function player_stop_animation(){
     player.classList.add('stop_player_animation_class');
 }
 
-function move(coord = [0, 0]){
+function move(coord = [0, 0]){ //moves player
     
     var nspeed = speed;
 
+    //rotation mechanics
     if(coord[0] != 0 && coord[1] != 0){
         nspeed = speed / 1.4142;
     }
@@ -61,6 +64,8 @@ function move(coord = [0, 0]){
         player.style.rotate = '0deg';
     }
 
+
+    //tutorial text
     if((coord[0] != 0 || coord[1] != 0) && move_tutorial_state == true){
     let w = '<span style="color: grey;">W</span>';
     if(tutorial_movement['w'] == true){
@@ -93,6 +98,7 @@ function move(coord = [0, 0]){
     }
 
 
+    //movement
     if (coords[0] + coord[0] * speed > 0 && coords[0] + coord[0] * nspeed < window.innerWidth - 50){
         coords[0] += coord[0] * nspeed;
         player.style.left = `${coords[0]}px`;
@@ -102,13 +108,14 @@ function move(coord = [0, 0]){
         player.style.bottom = `${coords[1]}px`;
     }
 
-
+    //stop moving animation
     if(was_holding == true && coord[0] == 0 && coord[1] == 0){
         was_holding = false;
         player_stop_animation();
         player.classList.remove('move_player_animation_class');
     }
 
+    //start moving animation
     if(was_holding == false && (coord[0] != 0 || coord[1] != 0)){
         was_holding = true;
         //console.log('holding');
@@ -124,11 +131,13 @@ function take_damage(damage = 0){
     }
     console.log("PLAYER TOOK DAMAGE!");
     player_hp += damage;
-    if(player_hp <= 0){
-        player.style.backgroundColor = `rgb(${0}, ${0}, 0)`;
+    if(player_hp <= 0){ //if dead stop game
+        player.style.backgroundColor = `rgb(0, 0, 0, 0)`;
         document.getElementById('DIED_TEXT').style.visibility = 'visible';
+        mouse_player.style.borderBottomColor = `rgb(0, 0, 0, 0)`;
         dead = true;
         player_dead = true;
+        send_request('player_dead', 'record_death');
         return;
     }
 
@@ -136,12 +145,13 @@ function take_damage(damage = 0){
     var counter = 255 - hp;
     console.log(hp);
     player.style.backgroundColor = `rgb(${counter}, ${Math.trunc(hp)}, 0)`;
+    mouse_player.style.borderBottomColor = `rgb(${counter}, ${Math.trunc(hp)}, 0)`;
 }
 
 var damage_inverval = 0;
 
-setInterval(() => {
-    if(player_dead == true || game_paused == true){
+setInterval(() => { //player movement update loop
+    if(player_dead == true || game_paused == true || boss_dead == true){
         return;
     }
 
@@ -157,23 +167,23 @@ setInterval(() => {
     if(boss != null){
         var calc = [coords[0] - parseInt(boss.style.left), coords[1] - parseInt(boss.style.bottom)];
         var dist = Math.sqrt(calc[0] ** 2 + calc[1] ** 2);
-        if(dist <= 200){
+        if(dist <= 120){
             //console.log('DISTANCE:', dist);
-            if(damage_inverval >= 1000){
+            if(damage_inverval >= 2000){
                 take_damage(-1);
                 damage_inverval = 0;
             }
         }
     }
 
-    for(let i = 0; i < live_rocks.length; i++){
+    for(let i = 0; i < live_rocks.length; i++){ //check if hit by a rock
         var r = live_rocks[i];
         if(r == undefined){
             continue;
         }
-        var calc = [coords[0] - r.x, coords[1] - r.y];
+        var calc = [coords[0] - (r.x - r.size / 2) , coords[1] - (r.y + r.size / 2)];
         var dist = Math.sqrt(calc[0] ** 2 + calc[1] ** 2);
-        if(dist <= 60){
+        if(dist <= (r.size + 10)){
             console.log('DISTANCE:', dist);
             destroy_rock(r);
             if(damage_inverval >= 1000){
@@ -200,7 +210,7 @@ addEventListener('mousemove', mousepos, false);
 
 
 
-function init_key_detection(){
+function init_key_detection(){ //key detection lisner
     const signalKeypressDuration = (key, duration) => {
         key = key.toLowerCase();
         //console.log(`Key ${key} pressed for ${duration} ms`);
@@ -222,6 +232,10 @@ function init_key_detection(){
         try{
         held_keys[key] = false;
         }catch(e){}
+        if(key == '3'){
+            //send_request("data", 'record_win');
+            //stage = '';
+        }
       });
 
 }

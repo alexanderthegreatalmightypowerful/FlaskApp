@@ -2,14 +2,21 @@
 <html>
 
 <head>
-
+<title>404 Boss Battle - {{title}}</title>
+<link href = "{{ url_for('static', filename='css/main.css') }}" rel = 'stylesheet' type="text/css">
 <link href = "{{ url_for('static', filename='css/404.css') }}" rel = 'stylesheet' type="text/css">
 <link href = "{{ url_for('static', filename='css/bg_animations.css') }}" rel = 'stylesheet' type="text/css">
 <link href = "{{ url_for('static', filename='css/rock.css') }}" rel = 'stylesheet' type="text/css">
+<link rel = 'icon', href = "/static/favicon.png">
 </head>
 
 <body>
 <div id = 'boss_bar'><div></div></div>
+
+<div style = "align-items: center; display: flex;">
+<button id = 'home', class = 'home' onclick = "window.location = '/home'">⌂</button>
+<button id = 'skip', class = 'skip' onclick = "skip_tutorial()">SKIP TUTORIAL</button>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 <script src = "{{ url_for('static', filename='javascript/request.js') }}"></script>
@@ -30,8 +37,8 @@
 <button id = 'sadface' class = 'boss' onclick = 'bossclicked()'></button>
 <button class = 'player', id = 'player'></button>
 <div class = 'mouse' id = 'mouse'></div>
+<h3 class = 'click_me', id = 'click_me'>click me...</h3>
 </center>
-
 
 <div class="area" >
             <ul class="circles">
@@ -50,6 +57,8 @@
 
 <center>
 <div class = 'DIED_TEXT' id = "DIED_TEXT">YOU DED!</div>
+<div class = 'WIN_TEXT' id = "WIN_TEXT">YOU WON! <br> 
+Return to the home screen and see your stats<br>updated!</div>
 </center>
 
 <div class = 'tutorial_bg' id = 'tutorial_bg'>
@@ -58,6 +67,7 @@
 
 </body>
 
-
-<script src = "{{ url_for('static', filename='javascript/player.js') }}"></script>
+<!-- We have to import the player script at the end bacause the player element has
+ to be created first before we can manipulate it in the js code -->
+<script src = "{{ url_for('static', filename='javascript/player.js') }}"></script> 
 </html>
